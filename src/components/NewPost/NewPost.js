@@ -5,7 +5,12 @@ import axios from 'axios'
 
 const NewPost = () => {
   const [data,setData] = useState("");  
-  const { register, handleSubmit, reset, formState: {errors} } = useForm({
+  const { 
+    register,
+     handleSubmit,
+      reset,
+       formState: {errors},
+       } = useForm({
     defaultValues: {},
   });
  const error = (data) => {
@@ -13,8 +18,11 @@ const NewPost = () => {
  }
  console.log(data)
   const submit = async (value) => {
-   try{ await  axios.post('http://localhost:3003/blog/posts', value)}
-   catch (err) {console.log(err)}
+   try{ 
+    await  axios.post('http://localhost:3003/blog/posts', value)
+  } catch (err) {
+    console.log(err)
+    }
 }
   return (
     <NewPostStyled>

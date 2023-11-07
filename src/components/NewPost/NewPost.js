@@ -8,35 +8,14 @@ const NewPost = () => {
   const { register, handleSubmit, reset, formState: {errors} } = useForm({
     defaultValues: {},
   });
-  //  const submit = (value) => {
-  //   setData(value)
-  //    console.log(value);
-  //  };
  const error = (data) => {
   console.log(data)
  }
  console.log(data)
- 
-  const submit = (value) => {
-    // value.preventDefault();
-    const formData = new FormData(value.target);
-    // setData(value)
-    //  console.log(value);
-   
-      axios.post('http://localhost:3003/blog/posts', formData)
-
-  .then((response) => {
-    setData(response.data)
-    console.log(data)
-  })
+  const submit = async (value) => {
+   try{ await  axios.post('http://localhost:3003/blog/posts', value)}
+   catch (err) { console.log(err) }
 }
-// useEffect(() => {
-  // axios.post('http://localhost:3003/blog/posts', )
-// const blogUrl = 'http://localhost:3003/blog/posts'
-// axios.post(blogUrl).then((resp) => {
-//   const users = resp.data;
-//   setAppState(users);
-//  },[setData])
   return (
     <NewPostStyled>
       <div className="postsArea">
@@ -46,12 +25,10 @@ const NewPost = () => {
             <div className="postTitle">Add your userId:</div>
             <input type="number"
             {...register('userId', {required: true})}
-             aria-invalid={errors.name ? true : false}             
+             aria-invalid={errors.name ? true : false}
              />
-            {/* <div className="postTitle">Add post title:</div>
-            <input type="text" {...register('title', {required: true})}/> */}
             <div className="postTitle">Add postText:</div>
-            <input type="text" {...register('postText', {required: true})}/>          
+            <input type="text" {...register('postText', {required: true})}/>
           <div className="postNumber">
             choose a topic:
             <div>Sport</div>

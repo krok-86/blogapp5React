@@ -1,14 +1,15 @@
 import PostEditStyled from "./PostEditStyled";
+import { useParams } from "react-router-dom";
 
 const PostEdit = () => {
+  let { id } = useParams();
   return (
     <PostEditStyled>
       <div className="postsArea">
         <div className="postsHead">Post edit:</div>
         <div className="postBody">
         <div className="postTitle">Post Title</div>
-          <input className="postValue">            
-          
+          <input className="postValue">
           </input>
           <div className="postInfo">
             <div className="postNumber">post #1</div>

@@ -1,18 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import App from './App';
 import './index.css';
-
-import reportWebVitals from './reportWebVitals';
 import Posts from './components/Posts/Posts';
 import PostEdit from './components/PostEdit/PostEdit';
 import NewPost from './components/NewPost/NewPost';
+import reportWebVitals from './reportWebVitals';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Posts />,
+  },
+  {
+    path: "/new",
+    element: <NewPost />,
+  },
+  {
+    path: "/PostEdit/:id",
+    element: <PostEdit />,
+  }
 
+])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <NewPost></NewPost>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

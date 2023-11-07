@@ -14,7 +14,7 @@ const NewPost = () => {
  console.log(data)
   const submit = async (value) => {
    try{ await  axios.post('http://localhost:3003/blog/posts', value)}
-   catch (err) { console.log(err) }
+   catch (err) {console.log(err)}
 }
   return (
     <NewPostStyled>

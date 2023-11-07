@@ -12,32 +12,32 @@ const NewPostStyled = styled.div`
         font-size: 36px;
         font-weight: 900;
         border: 1px solid red;
-        padding: 5px 5px 5px 5px;
-        margin: 5px 5px 5px 5px;
+        padding: 5px;
+        margin: 5px;
     }
     .postBody {
         border: 1px solid purple;
-        padding: 5px 5px 5px 5px;
-        margin: 5px 5px 5px 5px;
+        padding: 5px;
+        margin: 5px;
     }  
     .postTitle {
         border: 1px solid green;
-        padding: 5px 5px 5px 5px;
-        margin: 5px 5px 5px 5px;       
+        padding: 5px;
+        margin: 5px;       
     }
     .postValue {
         border: 1px solid green;
-        padding: 20px 20px 20px 20px;
-        margin: 5px 5px 5px 5px;        
+        padding: 20px;
+        margin: 5px;        
     }
     .postNumber {
         border: 1px solid orange;
-        padding: 5px 5px 5px 5px;
-        margin: 5px 5px 5px 5px;   
+        padding: 5px;
+        margin: 5px;   
     }
     .postButtonSend {
-        padding: 5px 5px 5px 5px;
-        margin: 5px 5px 5px 5px;   
+        padding: 5px;
+        margin: 5px;   
         width: 10%;
     }
 `

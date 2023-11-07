@@ -7,8 +7,7 @@ const Posts = () => {
   const  [posts, setPosts] = useState([]);
   useEffect(() => {
 const fetchData = async () => {
-  const result = await axios ('http://localhost:3003/blog/posts', 
-   )
+  const result = await axios.get ('http://localhost:3003/blog/posts')
   setPosts(result.data);
   };
   fetchData();
@@ -20,7 +19,7 @@ const fetchData = async () => {
           <div className="postBody">
           <div className="postValue">
           <div className="postTitle">Post Title
-          <Link to='/New'><button>add+</button></Link>
+          <Link to='/New'><button className="postAdd">add+</button></Link>
           </div>
             {posts.map((item, index)=> (
               <div className="postValue" key={item.id}>{item.post}

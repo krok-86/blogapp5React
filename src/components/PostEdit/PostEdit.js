@@ -1,12 +1,15 @@
 import PostEditStyled from "./PostEditStyled";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const PostEdit = () => {
+  const navigate = useNavigate();
+
   let { id } = useParams();
 
-  const [postId,setPostId] = useState([]);
+  const [postId,setPostId] = useState({});
+
 
   useEffect(() => {
     const fetchDataId = async () => {
@@ -14,27 +17,36 @@ const PostEdit = () => {
         const result = await axios.get(
           `http://localhost:3003/blog/posts/${id}`
         );
-        setPostId(result.data);
-        // fetchDataId(id);
+        const postData = {...result.data, postText: result.data.post}
+        setPostId(postData);
+
       } catch (err) {
-        console.log(err);
+         console.log(err)
       }
     };
-    fetchDataId().catch(console.error); //is this?
+
+    fetchDataId(id);
+
   }, []);
 
-const updatePost = (value) => {
-  const newPost = {...postId,postText,userId,value}  
-  setPostId(newPost)
+const updatePost = (event) => {
+  try {
+  const newPost = {...postId,postText: event.target.value};
+  setPostId(newPost);
+  } catch(err) {
+    console.log(err)
+  }
 }
 
 const sendPost = async () => {
   try {
-    await axios({
-      url: `http://localhost:3003/blog/posts/${id}`,
-      params: { postId },
-      method: "PUT",
-    });
+    // await axios({
+    //   url: `http://localhost:3003/blog/posts/${id}`,
+    //   body: JSON.stringify(postId),
+    //   method: "PUT",
+    // });
+    await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
+    navigate("/");
   } catch (err) {
     console.log(">>>>>>>>>>>>>>>>", err);
   }
@@ -68,8 +80,8 @@ const sendPost = async () => {
           <input
             className="postValue"
             type="text"
-            value={postId.post}
-            onChange={updatePost}
+            value={postId.postText}
+            onChange={(event) => updatePost(event)}
           ></input>
           <div className="postInfo">
             <div className="postNumber">post #{postId.id}</div>

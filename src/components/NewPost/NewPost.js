@@ -6,7 +6,7 @@ import Select from 'react-select'
 
 const NewPost = () => {
 
-  const [data,setData] = useState("");  
+  const [author,setAuthor] = useState('');
 
   const [users, setUsers] = useState([])
   // const options = [
@@ -43,13 +43,20 @@ const NewPost = () => {
 
   const submit = async (value) => {
    try{ 
-    await  axios.post('http://localhost:3003/blog/posts', value)
-    console.log(value)
+    const body = {...value, userId: author}
+    await  axios.post('http://localhost:3003/blog/posts', body)
+   
+    console.log(">>>>>>>>>",body)
+    
   } catch (err) {
     console.log(err)
     }    
 }
-
+const handleSelect = (author) => {
+  setAuthor(author.value)
+    // setAuthor('', value)
+    // setUsers(value)
+}
   return (
     <NewPostStyled>
       <div className="postsArea">
@@ -57,18 +64,15 @@ const NewPost = () => {
         <div className="postBody">
           <form onSubmit={handleSubmit(submit, error)}>
             <div className="postTitle">Add your userId:</div>
-            <input type="number"
+            {/* <input type="number"
             {...register('userId', {required: true})}
              aria-invalid={errors.name ? true : false}
-             />
+             /> */}
             <div className="postTitle">Add postText:</div>
             <input type="text" {...register('postText', {required: true})}/>
             
             <Select options={options} 
-            onChange= {(value) => {
-              submit('userId', value)
-              setUsers(value)
-            }}
+            onChange= {(value) => handleSelect(value)}
             />
 
             {/* <label>

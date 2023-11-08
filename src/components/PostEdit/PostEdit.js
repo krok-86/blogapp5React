@@ -17,16 +17,14 @@ const PostEdit = () => {
         const result = await axios.get(
           `http://localhost:3003/blog/posts/${id}`
         );
-        const postData = {...result.data, postText: result.data.post}
+        const postData = {...result.data, postText: result.data.post}//data
         setPostId(postData);
 
       } catch (err) {
          console.log(err)
       }
     };
-
     fetchDataId(id);
-
   }, []);
 
 const updatePost = (event) => {
@@ -39,36 +37,13 @@ const updatePost = (event) => {
 }
 
 const sendPost = async () => {
-  try {
-    // await axios({
-    //   url: `http://localhost:3003/blog/posts/${id}`,
-    //   body: JSON.stringify(postId),
-    //   method: "PUT",
-    // });
+  try {    
     await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
     navigate("/");
   } catch (err) {
     console.log(">>>>>>>>>>>>>>>>", err);
   }
 }
-
-  // const savePost =  () => {
-  //  setPostId=postId.post
-  // }
-  // console.log(postId);
-  //   const handleSave = (value) => {
-  //     if (value) {
-  //       console.log(value);
-  //       setPostId();
-  //     }
-  //   };
-  // const handleSave = async (value) => {
-  //   try {
-  //     await axios.post("http://localhost:3003/blog/posts", value);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   return (
     <PostEditStyled>

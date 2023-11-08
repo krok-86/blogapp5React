@@ -16,6 +16,11 @@ const PostsStyled = styled.div`
         padding: 5px;
         margin: 5px;
     }
+    .postAdd {
+        padding: 5px;
+        margin: 5px;   
+        width: 10%;
+    }   
     .postBody {
         border: 1px solid purple;
         padding: 5px;
@@ -56,17 +61,19 @@ const PostsStyled = styled.div`
         padding: 5px;
         margin: 5px;   
     }
+    .postDelete {
+        border: 2px solid red;
+        text-align:center;
+        padding: 10px;
+        margin: 5px;   
+        width: 60px;    }
     .postEdit {
         text-align:center;
         padding: 10px;
         margin: 5px;   
         width: 40px;
     }
-    .postAdd {
-        padding: 5px;
-        margin: 5px;   
-        width: 10%;
-    }    
+     
 `
 
 export default PostsStyled;

@@ -2,9 +2,20 @@ import { useForm } from "react-hook-form";
 import NewPostStyled from "../NewPost/NewPostStyled";
 import { useEffect, useState } from "react";
 import axios from 'axios'
+import Select from 'react-select'
 
 const NewPost = () => {
+
   const [data,setData] = useState("");  
+
+  const [users, setUsers] = useState([])
+  // const options = [
+  //   { value: 'chocolate', label: 'Chocolate' },
+  //   { value: 'strawberry', label: 'Strawberry' },
+  //   { value: 'vanilla', label: 'Vanilla' }
+  // ]
+  const userName = users.map((item) => ({ label: item.name, value: item.id }));
+  console.log(userName)
   const { 
     register,
      handleSubmit,
@@ -16,14 +27,29 @@ const NewPost = () => {
  const error = (data) => {
   console.log(data)
  }
- console.log(data)
+ const options = userName
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get("http://localhost:3003/blog/users");
+        setUsers(result.data);
+      } catch (err) {
+        console.log(">>>>>>", err);
+      }
+    };
+    fetchData();
+  }, []);
+
   const submit = async (value) => {
    try{ 
     await  axios.post('http://localhost:3003/blog/posts', value)
+    console.log(value)
   } catch (err) {
     console.log(err)
-    }
+    }    
 }
+
   return (
     <NewPostStyled>
       <div className="postsArea">
@@ -37,12 +63,32 @@ const NewPost = () => {
              />
             <div className="postTitle">Add postText:</div>
             <input type="text" {...register('postText', {required: true})}/>
-          <div className="postNumber">
+            
+            <Select options={options} 
+            onChange= {(value) => {
+              submit('userId', value)
+              setUsers(value)
+            }}
+            />
+
+            {/* <label>
+            Select name:
+            <select>
+                {options?.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
+        </label> */}
+
+          {/* <div className="postNumber">
             choose a topic:
             <div>Sport</div>
             <div>News</div>
             <div>Culture</div>
-          </div>
+          </div> */}
+
           <button className="PostButtonSend">Send</button>
           <button className="PostButtonSend"
           type="button"

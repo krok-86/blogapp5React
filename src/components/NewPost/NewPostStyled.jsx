@@ -19,11 +19,11 @@ const NewPostStyled = styled.div`
         border: 1px solid purple;
         padding: 5px;
         margin: 5px;
-    }  
-    .postTitle {
-        border: 1px solid green;
+    }      
+    .postAuthor {
+        border: 1px solid blueviolet;
         padding: 5px;
-        margin: 5px;       
+        margin: 5px;
     }
     .postValue {
         border: 1px solid green;

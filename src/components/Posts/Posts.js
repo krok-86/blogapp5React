@@ -28,7 +28,9 @@ console.log(posts)
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-
+console.log(posts)
+// const topicTitle = posts.map((item) => ({ title: item.title}));
+// console.log(topicTitle)
   return (
     <PostsStyled>
       <div className="postsArea">
@@ -49,7 +51,12 @@ console.log(posts)
                     post #{index + 1}
                   </div>
                   <div className="postTopic" key={item.id}>
-                    Topic:
+                  Topic:
+                  {item.topics.map ((item ) => (
+                  <div>
+                     {item?.title}
+                  </div>
+                  ))}
                   </div>
                   <div className="postDate" key={item.id}>
                     created at {item.createdAt}

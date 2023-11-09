@@ -1,14 +1,26 @@
+import React from 'react'
 import PostEditStyled from "./PostEditStyled";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import sanitizeHtml from "sanitize-html"
+import ContentEditable from 'react-contenteditable';
 
 const PostEdit = () => {
   const navigate = useNavigate();
 
   let { id } = useParams();
 
-  const [postId,setPostId] = useState({});
+  const [postId, setPostId] = useState({});
+  const [content, setContent] = React.useState("")
+
+  const onContentChange = React.useCallback(evt => {
+		const sanitizeConf = {
+			allowedTags: ["b", "i", "a", "p"],
+			allowedAttributes: { a: ["href"] }
+		};
+		setContent(sanitizeHtml(evt.currentTarget.innerHTML, sanitizeConf))
+	}, [])
 
 
   useEffect(() => {
@@ -17,56 +29,57 @@ const PostEdit = () => {
         const result = await axios.get(
           `http://localhost:3003/blog/posts/${id}`
         );
-        const postData = {...result.data, postText: result.data.post}//data
+        const postData = { ...result.data, postText: result.data.post }; //data
         setPostId(postData);
-
       } catch (err) {
-         console.log(err)
+        console.log(err);
       }
     };
     fetchDataId(id);
   }, []);
 
-const updatePost = (event) => {
-  try {
-  const newPost = {...postId,postText: event.target.value};
-  setPostId(newPost);
-  } catch(err) {
-    console.log(err)
-  }
-}
+  const updatePost = (event) => {
+    try {
+      const newPost = { ...postId, postText: event.target.value };
+      setPostId(newPost);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-const sendPost = async () => {
-  try {    
-    await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
-    navigate("/");
-  } catch (err) {
-    console.log(">>>>>>>>>>>>>>>>", err);
-  }
-}
-
+  const sendPost = async () => {
+    try {
+      await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
+      navigate("/");
+    } catch (err) {
+      console.log(">>>>>>>>>>>>>>>>", err);
+    }
+  };
+    
   return (
     <PostEditStyled>
       <div className="postsArea">
-        <div className="postsHead">Post edit:</div>
+        <div className="postsHead">editor</div>
         <div className="postBody">
-          <div className="postTitle">Post Title</div>
+          <div className="postTitle">Post content:</div>
 
-          <input
+          <ContentEditable
             className="postValue"
-            type="text"
-            value={postId.postText}
             onChange={(event) => updatePost(event)}
-          ></input>
+            onBlur={onContentChange}          
+            html={postId.postText}
+          />
           <div className="postInfo">
             <div className="postNumber">post #{postId.id}</div>
-            <div className="postTopic">Topic: sport</div>
+            <div className="postTopic">
+              Topic:
+              {postId?.topics?.map((item) => (
+                <div>{item?.title}</div>
+              ))}
+            </div>
             <div className="postDate">Date:{postId.createdAt}</div>
             <div className="postAuthor">Author: {postId.user?.name}</div>
-            <button
-              className="postSave"
-              onClick={sendPost}
-            >
+            <button className="postSave" onClick={sendPost}>
               save
             </button>
           </div>

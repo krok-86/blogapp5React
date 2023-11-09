@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const NewPost = () => {
  
@@ -50,9 +52,29 @@ const NewPost = () => {
     try {
       const body = { ...value, userId: author, topicId: topicData};
       await axios.post("http://localhost:3003/blog/posts", body);
+      toast.success('Post is created', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
       navigate("/");
-      console.log(">>>>>>>>>",body)
     } catch (err) {
+      toast.error(err.response.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      
       console.log(err);
     }
   };
@@ -79,33 +101,37 @@ const NewPost = () => {
   return (
     <NewPostStyled>
       <div className="postsArea">
-        <div className="postsHead">Add new post:</div>
+        <div className="postsHead">add new post:</div>
         <div className="postBody">
           <form onSubmit={handleSubmit(submitPosts, error)}>
             {/* <input type="number"
             {...register('userId', {required: true})}
              aria-invalid={errors.name ? true : false}
              /> */}
-            <div className="postTitle">Add postText:</div>
+            <div className="postTitle">Add post:</div>
             <input type="text" {...register("postText", { required: true })} />
-            <div className="postAuthor">Select author:</div>
             <Select
+              className="createSelect"
               options={userName}
               onChange={(value) => handleSelectUser(value)}
+              placeholder='Select author...'
             />
-            <div className="postAuthor">Select topic:</div>
             <Select
-            options={topicTitle}
-            onChange={(value) => handleSelectTopic(value)}
+              className="createSelect"
+              options={topicTitle}
+              onChange={(value) => handleSelectTopic(value)}
+              placeholder='Select topic...'
             />
-            <button className="PostButtonSend">Send</button>
+            <div className="editButtons">
+            <button className="postButtonSend">Save</button>
             <button
-              className="PostButtonSend"
+              className="postButtonSend postButtonSend__clear"
               type="button"
               onClick={() => reset()}
             >
-              clear all
+              Clear post
             </button>
+            </div>
           </form>
         </div>
       </div>

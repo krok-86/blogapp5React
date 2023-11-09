@@ -3,8 +3,17 @@ import styled from 'styled-components';
 const PostsStyled = styled.div`
     
     .postsArea {
-        height: 100%;
-        border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    width: 716px;
+    height: 100%;
+    border: 2px solid #d5dde0;
+    border-radius: 20px;
+    margin: 20px auto;
+    }
+    .postsArea:hover {
+        box-shadow: 1px 2px 3px gray;
+        border: 0px solid #ffffff;
     }
     .postsHead {
         display: flex;
@@ -12,9 +21,9 @@ const PostsStyled = styled.div`
         justify-content: center;
         font-size: 36px;
         font-weight: 900;
-        border: 1px solid red;
         padding: 5px;
         margin: 5px;
+        color: #72a0c6;
     }
     .postAdd {
         padding: 5px;
@@ -22,27 +31,31 @@ const PostsStyled = styled.div`
         width: 10%;
     }   
     .postBody {
-        border: 1px solid purple;
+        border-top: 1px solid #72a0c6;;
         padding: 5px;
         margin: 5px;
     }    
     .postValue {
-        border: 1px solid green;
-        padding: 20px;
+        padding: 0px 20px 20px 20px;
         margin: 5px;        
     }
-    .postTitle {
-        border: 1px solid green;
-        padding: 5px;
-        margin: 5px;       
+    .postAddButton {
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        background-color: #72a0c6;
+        color: white;
+        border: none;
+        &:hover{
+            opacity: 0.7;
+        }
     }
     .postInfo {
         display: flex;
         justify-content: space-between;
-        border: 1px solid orange;
+        border-top: 1px solid #72a0c6
     }
     .postNumber {
-        border: 1px solid orange;
         padding: 5px;
         margin: 5px;   
     }
@@ -51,16 +64,6 @@ const PostsStyled = styled.div`
         padding: 5px;
         margin: 5px;   
     }        
-    .postDate {
-        border: 1px solid orange;
-        padding: 5px;
-        margin: 5px;   
-    }
-    .postAuthor {
-        border: 1px solid orange;
-        padding: 5px;
-        margin: 5px;   
-    }
     .postDelete {
         border: 2px solid red;
         text-align:center;
@@ -73,6 +76,30 @@ const PostsStyled = styled.div`
         margin: 5px;   
         width: 40px;
     }
+
+    .postTitle {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        border: none;
+    }
+
+    .postButton {
+        height: 40px;
+        min-width: 50px;
+        background-color: #72a0c6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        &__edit {
+            margin-left: 10px;
+        }
+        &:hover{
+            opacity: 0.7;
+        }
+    }
+    
      
 `
 

@@ -25,20 +25,27 @@ const PostsStyled = styled.div`
         margin: 5px;
         color: #72a0c6;
     }
-    .postAdd {
-        padding: 5px;
-        margin: 5px;   
-        width: 10%;
-    }   
     .postBody {
         border-top: 1px solid #72a0c6;;
         padding: 5px;
         margin: 5px;
-    }    
+    }   
     .postValue {
         padding: 0px 20px 20px 20px;
-        margin: 5px;        
+        margin: 5px;
+        color:#757575;        
     }
+    .postTitle {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        border: none;
+    }
+    /* .postAdd {
+        padding: 5px;
+        margin: 5px;   
+        width: 10%;
+    }        */
     .postAddButton {
         border-radius: 50%;
         width: 70px;
@@ -77,12 +84,7 @@ const PostsStyled = styled.div`
         width: 40px;
     }
 
-    .postTitle {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        border: none;
-    }
+    
 
     .postButton {
         height: 40px;

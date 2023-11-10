@@ -5,10 +5,9 @@ import axios from "axios";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const NewPost = () => {
- 
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
@@ -19,10 +18,13 @@ const NewPost = () => {
 
   const [topicData, setTopicData] = useState("");
 
-// console.log(topics)
+  // console.log(topics)
   const userName = users.map((item) => ({ label: item.name, value: item.id }));
   // console.log(userName)
-  const topicTitle = topics.map((item) => ({ label: item.title, value: item.id }));
+  const topicTitle = topics.map((item) => ({
+    label: item.title,
+    value: item.id,
+  }));
   // console.log(topicTitle)
   const {
     register,
@@ -50,9 +52,9 @@ const NewPost = () => {
 
   const submitPosts = async (value) => {
     try {
-      const body = { ...value, userId: author, topicId: topicData};
+      const body = { ...value, userId: author, topicId: topicData };
       await axios.post("http://localhost:3003/blog/posts", body);
-      toast.success('Post is created', {
+      toast.success("Post is created", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -61,7 +63,7 @@ const NewPost = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
       navigate("/");
     } catch (err) {
       toast.error(err.response.data.message, {
@@ -73,8 +75,8 @@ const NewPost = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
-      
+      });
+
       console.log(err);
     }
   };
@@ -104,33 +106,32 @@ const NewPost = () => {
         <div className="postsHead">add new post:</div>
         <div className="postBody">
           <form onSubmit={handleSubmit(submitPosts, error)}>
-            {/* <input type="number"
-            {...register('userId', {required: true})}
-             aria-invalid={errors.name ? true : false}
-             /> */}
-            <div className="postTitle">Add post:</div>
-            <input type="text" {...register("postText", { required: true })} />
+            <input
+              type="text"
+              {...register("postText", { required: true })}
+              placeholder="add new post"
+            />
             <Select
               className="createSelect"
               options={userName}
               onChange={(value) => handleSelectUser(value)}
-              placeholder='Select author...'
+              placeholder="Select author..."
             />
             <Select
               className="createSelect"
               options={topicTitle}
               onChange={(value) => handleSelectTopic(value)}
-              placeholder='Select topic...'
+              placeholder="Select topic..."
             />
             <div className="editButtons">
-            <button className="postButtonSend">Save</button>
-            <button
-              className="postButtonSend postButtonSend__clear"
-              type="button"
-              onClick={() => reset()}
-            >
-              Clear post
-            </button>
+              <button className="postButtonSend">Save</button>
+              <button
+                className="postButtonSend postButtonSend__clear"
+                type="button"
+                onClick={() => reset()}
+              >
+                Clear post
+              </button>
             </div>
           </form>
         </div>

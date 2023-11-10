@@ -18,9 +18,7 @@ padding-top: 10rem;
         box-shadow: 1px 2px 3px gray;
         border: 0px solid #ffffff;
     }
-    /* .postsArea:focus {
-        border: none; 
-    } */
+    
     .postsHead {
         display: flex;
         align-items: center;
@@ -34,28 +32,28 @@ padding-top: 10rem;
     .postBody {        
         padding: 5px;
         margin: 5px;
+        color: #757575;
     }    
-    .postValue {        
-        padding: 20px;
-        margin-top: -2em;      
-        color:#757575; 
-        
-    }
-    .postValue:focus {
-            outline:none 
-    } 
     .postTitle {       
         padding: 5px;
         margin: 5px 5px 20px 5px;
         padding: 15px;
     }
+    .postValue {        
+        padding: 20px;
+        margin-top: -2em;      
+        color:#757575;         
+    }
+    .postValue:focus {
+            outline:none 
+    } 
+    
     .postInfo {
         display: flex;
         justify-content: space-between;
         border-top: 1px solid grey;
     }
-    .postNumber {
-        /* border: 1px solid orange; */
+    .postNumber {       
         padding: 5px;
         margin: 5px;
         display: flex;
@@ -65,20 +63,6 @@ padding-top: 10rem;
     .postTopic {
         padding: 5px;
         margin: 5px;   
-    }
-    .postButtonSave {
-        padding: 5px;
-        margin: 5px;
-        width: 10%;
-        border-radius: 10px;
-        border: none;
-        cursor:  pointer;
-        height: 40px;
-        background-color: #72a0c6;
-        color: white;
-        &:hover{
-            opacity: 0.7;
-        }
-    }    
+    }   
 `;
 export default PostEditStyled;

@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import PostsStyled from "./PostsStyled";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import Button from "../commoneComponents/Buttons/Button";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -50,8 +51,6 @@ console.log(posts)
     }
   };
 console.log(posts)
-// const topicTitle = posts.map((item) => ({ title: item.title}));
-// console.log(topicTitle)
   return (
     <PostsStyled>
       <div className="postsArea">
@@ -60,7 +59,9 @@ console.log(posts)
           <div className="postValue">
             <div className="postTitle">
               <Link to="/New">
-                <button className="postAddButton">add new post</button>
+                <Button 
+                className="postAddButton"
+                name = "add new post" />
               </Link>
             </div>
             {posts.map((item, index) => (
@@ -82,14 +83,14 @@ console.log(posts)
                     created at {item.createdAt}
                   </div>
                   <div className="postNumber">Author {item?.user?.name}</div>
-                  <button
-                    className="postButton"
-                    onClick={() => deletePost(item.id)}
-                  >                 
-                    delete
-                  </button>
+                  <Button                    
+                    handleClick={() => deletePost(item.id)}
+                    name = "delete"
+                  />
                   <Link to={`/PostEdit/${item.id}`}>
-                    <button className="postButton postButton__edit">edit</button>
+                    <Button                    
+                    name = "edit"
+                    />
                   </Link>
                 </div>
               </div>

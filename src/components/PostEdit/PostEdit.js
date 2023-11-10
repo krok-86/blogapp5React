@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 import PostEditStyled from "./PostEditStyled";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import sanitizeHtml from "sanitize-html"
-import ContentEditable from 'react-contenteditable';
-import { toast } from 'react-toastify';
-import Button from '../commoneComponents/Buttons/Button';
+import sanitizeHtml from "sanitize-html";
+import ContentEditable from "react-contenteditable";
+import { toast } from "react-toastify";
+import Button from "../commoneComponents/Buttons/Button";
 
 const PostEdit = () => {
   const navigate = useNavigate();
@@ -14,16 +14,15 @@ const PostEdit = () => {
   let { id } = useParams();
 
   const [postId, setPostId] = useState({});
-  const [content, setContent] = React.useState("")
+  const [content, setContent] = React.useState("");
 
-  const onContentChange = React.useCallback(evt => {
-		const sanitizeConf = {
-			allowedTags: ["b", "i", "a", "p"],
-			allowedAttributes: { a: ["href"] }
-		};
-		setContent(sanitizeHtml(evt.currentTarget.innerHTML, sanitizeConf))
-	}, [])
-
+  const onContentChange = React.useCallback((evt) => {
+    const sanitizeConf = {
+      allowedTags: ["b", "i", "a", "p"],
+      allowedAttributes: { a: ["href"] },
+    };
+    setContent(sanitizeHtml(evt.currentTarget.innerHTML, sanitizeConf));
+  }, []);
 
   useEffect(() => {
     const fetchDataId = async () => {
@@ -52,7 +51,7 @@ const PostEdit = () => {
   const sendPost = async () => {
     try {
       await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
-      toast.success('Post is updated', {
+      toast.success("Post is updated", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -61,7 +60,7 @@ const PostEdit = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
       navigate("/");
     } catch (err) {
       toast.error(err.response.data.message, {
@@ -73,11 +72,11 @@ const PostEdit = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-  
+
   return (
     <PostEditStyled>
       <div className="postsArea">
@@ -93,18 +92,19 @@ const PostEdit = () => {
           />
           <div className="postInfo">
             <div className="postNumber">post #{postId.id}</div>
-            {!!postId?.topics?.length && <div className="postTopic">
-              Topic:
-              {postId?.topics?.map((item) => (
-                <div>{item?.title}</div>
-              ))}
-            </div>
-}
+            {!!postId?.topics?.length && (
+              <div className="postTopic">
+                Topic:
+                {postId?.topics?.map((item) => (
+                  <div>{item?.title}</div>
+                ))}
+              </div>
+            )}
             <div className="postNumber">Date:{postId.createdAt}</div>
-            {postId.user?.name?.length && <div className="postNumber">Author: {postId.user?.name}</div>}
-            <Button handleClick={sendPost}
-              name="save"
-            />
+            {postId.user?.name?.length && (
+              <div className="postNumber">Author: {postId.user?.name}</div>
+            )}
+            <Button handleClick={sendPost} name="save" />
           </div>
         </div>
       </div>

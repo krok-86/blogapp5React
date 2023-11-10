@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import sanitizeHtml from "sanitize-html";
 import ContentEditable from "react-contenteditable";
-import { toast } from "react-toastify";
-import Button from "../commoneComponents/Buttons/Button";
+import Button from "../Buttons/Button";
+import { successToast, errorToast } from "../Utilities/toasts";
+
 
 const PostEdit = () => {
   const navigate = useNavigate();
@@ -51,32 +52,14 @@ const PostEdit = () => {
   const sendPost = async () => {
     try {
       await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
-      toast.success("Post is updated", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToast("the post has been edited");
       navigate("/");
-    } catch (err) {
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    } catch (err) {     
+      errorToast(err.response.data.message);
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-
+  // const RUDate = new Intl.DateTimeFormat('ru');
   return (
     <PostEditStyled>
       <div className="postsArea">
@@ -95,8 +78,8 @@ const PostEdit = () => {
             {!!postId?.topics?.length && (
               <div className="postTopic">
                 Topic:
-                {postId?.topics?.map((item) => (
-                  <div>{item?.title}</div>
+                {postId?.topics?.map((item, index) => (
+                  <div key = {`date${index}`}>{item?.title}</div>
                 ))}
               </div>
             )}
@@ -112,3 +95,4 @@ const PostEdit = () => {
   );
 };
 export default PostEdit;
+//{postId.createdAt=format(new Date(postId.createdAt), 'MMM d, yyyy')}

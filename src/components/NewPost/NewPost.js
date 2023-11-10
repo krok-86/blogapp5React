@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Button from "../Buttons/Button";
+import {successToast, errorToast} from "../Utilities/toasts"
 
 const NewPost = () => {
   const navigate = useNavigate();
@@ -18,26 +18,22 @@ const NewPost = () => {
 
   const [topicData, setTopicData] = useState("");
 
-  // console.log(topics)
+  
   const userName = users.map((item) => ({ label: item.name, value: item.id }));
-  // console.log(userName)
+  
   const topicTitle = topics.map((item) => ({
     label: item.title,
     value: item.id,
   }));
-  // console.log(topicTitle)
+ 
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors },
+    reset,        
   } = useForm({
     defaultValues: {},
   });
-  const error = (data) => {
-    console.log(data);
-  };
-
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -54,29 +50,10 @@ const NewPost = () => {
     try {
       const body = { ...value, userId: author, topicId: topicData };
       await axios.post("http://localhost:3003/blog/posts", body);
-      toast.success("Post is created", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToast();
       navigate("/");
     } catch (err) {
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
+      errorToast(err.response.data.message)
       console.log(err);
     }
   };
@@ -105,10 +82,11 @@ const NewPost = () => {
       <div className="postsArea">
         <div className="postsHead">add new post:</div>
         <div className="postBody">
-          <form onSubmit={handleSubmit(submitPosts, error)}>
-            <input
+          <form onSubmit={handleSubmit(submitPosts)}>
+            <textArea
+              className="postInput"
               type="text"
-              {...register("postText", { required: true })}
+              {...register("postText", { required: true })}              
               placeholder="add new post"
             />
             <Select
@@ -124,14 +102,14 @@ const NewPost = () => {
               placeholder="Select topic..."
             />
             <div className="editButtons">
-              <button className="postButtonSend">Save</button>
-              <button
+              <Button 
+              className="postButtonSend"
+              name = "save"/>
+              <Button
                 className="postButtonSend postButtonSend__clear"
-                type="button"
-                onClick={() => reset()}
-              >
-                Clear post
-              </button>
+                handleClick={() => reset()}
+                name = "clear post"
+              />
             </div>
           </form>
         </div>

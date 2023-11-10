@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
-const ButtonStyled = styled.div`
-.postButton {
+const ButtonStyled = styled.button`
 
         padding: 5px;
         margin: 5px;
-        min-width: 40px;
-        min-height: 40px;
+        min-width: 45px;
+        min-height: 40px;        
         border-radius: 10px;
         border: none;
         cursor:  pointer;
@@ -16,6 +15,6 @@ const ButtonStyled = styled.div`
         &:hover{
             opacity: 0.7;
         }
-    }    
+    
 `
 export default ButtonStyled;

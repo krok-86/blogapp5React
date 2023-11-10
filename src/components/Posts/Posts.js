@@ -2,8 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import PostsStyled from "./PostsStyled";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify"
-import Button from "../commoneComponents/Buttons/Button";
+import Button from "../Buttons/Button";
+import { successToast, errorToast } from "../Utilities/toasts";
+import {format} from "date-fns";
+import ru from "date-fns/locale/ru";
+import { enGB } from "date-fns/esm/locale";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -23,34 +26,16 @@ const Posts = () => {
   const deletePost = async (id) => {
     try {
       await axios.delete(`http://localhost:3003/blog/posts/${id}`, posts);
-console.log(posts)
-      const newPostList = posts.filter( (item)=>item.id !== id)
+      console.log(posts);
+      const newPostList = posts.filter((item) => item.id !== id);
       setPosts(newPostList);
-      toast.success('Post is deleted', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
+      successToast("post is deleted");
     } catch (err) {
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
+      errorToast(err.response.data.message);
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-console.log(posts)
+  console.log(posts);
   return (
     <PostsStyled>
       <div className="postsArea">
@@ -59,38 +44,32 @@ console.log(posts)
           <div className="postValue">
             <div className="postTitle">
               <Link to="/New">
-                <Button 
-                className="postAddButton"
-                name = "add new post" />
+                <Button className="postAddButton" name="add new post" />
               </Link>
             </div>
             {posts.map((item, index) => (
-              <div className="postValue" key={item.id}>
-                {item.post}
+              <div className="postValue" key={`posts${index}`}>
+                <div className="postText">{item.post}</div>
                 <div className="postInfo">
-                  <div className="postNumber" key={item.id}>
+                  <div className="postNumber" key={`post${index}`}>
                     post #{index + 1}
                   </div>
-                  <div className="postNumber" key={item.id}>
-                  Topic:
-                  {item.topics.map ((item ) => (
-                  <div>
-                     {item?.title}
+                  <div className="postNumber" key={`author${index}`}>
+                    Topic:
+                    {item.topics.map((item,index) => (
+                      <div key={`topics${index}`}>{item?.title}</div>
+                    ))}
                   </div>
-                  ))}
-                  </div>
-                  <div className="postNumber" key={item.id}>
-                    created at {item.createdAt}
+                  <div className="postNumber" key={`data${index}`}>
+                    created at {format(new Date(item.createdAt), 'MMM d, yyyy', {locale: enGB})}
                   </div>
                   <div className="postNumber">Author {item?.user?.name}</div>
-                  <Button                    
+                  <Button
                     handleClick={() => deletePost(item.id)}
-                    name = "delete"
+                    name="delete"
                   />
                   <Link to={`/PostEdit/${item.id}`}>
-                    <Button                    
-                    name = "edit"
-                    />
+                    <Button name="edit" />
                   </Link>
                 </div>
               </div>

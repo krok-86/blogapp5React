@@ -3,27 +3,17 @@ import PostEditStyled from "./PostEditStyled";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import sanitizeHtml from "sanitize-html";
-import ContentEditable from "react-contenteditable";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
+import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
 
 
 const PostEdit = () => {
   const navigate = useNavigate();
-
   let { id } = useParams();
 
   const [postId, setPostId] = useState({});
-  const [content, setContent] = React.useState("");
-
-  const onContentChange = React.useCallback((evt) => {
-    const sanitizeConf = {
-      allowedTags: ["b", "i", "a", "p"],
-      allowedAttributes: { a: ["href"] },
-    };
-    setContent(sanitizeHtml(evt.currentTarget.innerHTML, sanitizeConf));
-  }, []);
 
   useEffect(() => {
     const fetchDataId = async () => {
@@ -42,7 +32,7 @@ const PostEdit = () => {
 
   const updatePost = (event) => {
     try {
-      const newPost = { ...postId, postText: event.target.value };
+      const newPost = { ...postId, postText: event.target.value};
       setPostId(newPost);
     } catch (err) {
       console.log(err);
@@ -52,40 +42,43 @@ const PostEdit = () => {
   const sendPost = async () => {
     try {
       await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
-      successToast("the post has been edited");
+      successToast("The post has been edited");
       navigate("/");
-    } catch (err) {     
+    } catch (err) {
       errorToast(err.response.data.message);
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-  // const RUDate = new Intl.DateTimeFormat('ru');
+
+  const date = postId?.createdAt && format(new Date(postId.createdAt), 'MMM d, yyyy', {locale: enGB});
+
   return (
     <PostEditStyled>
-      <div className="postsArea">
-        <div className="postsHead">edit form</div>
-        <div className="postBody">
-          <div className="postTitle">Post content:</div>
-
-          <ContentEditable
-            className="postValue"
-            onChange={(event) => updatePost(event)}
-            onBlur={onContentChange}
-            html={postId.postText}
-          />
-          <div className="postInfo">
-            <div className="postNumber">post #{postId.id}</div>
+      <div className="post-area">
+        <div className="post-head">Edit form</div>
+        <div className="post-body">
+          <div className="post-title">Post content:</div>
+            <textarea
+              className="post-input"
+              type="text"
+              onChange={updatePost}
+              placeholder="Add new post"
+            >
+              {postId.postText}
+            </textarea>
+          <div className="post-info">
+            <div className="post-number">post #{postId.id}</div>
             {!!postId?.topics?.length && (
-              <div className="postTopic">
+              <div className="post-topic">
                 Topic:
                 {postId?.topics?.map((item, index) => (
                   <div key = {`date${index}`}>{item?.title}</div>
                 ))}
               </div>
             )}
-            <div className="postNumber">Date:{postId.createdAt}</div>
+            <div className="post-number">Date:{date}</div>
             {postId.user?.name?.length && (
-              <div className="postNumber">Author: {postId.user?.name}</div>
+              <div className="post-number">Author: {postId.user?.name}</div>
             )}
             <Button handleClick={sendPost} name="save" />
           </div>
@@ -95,4 +88,3 @@ const PostEdit = () => {
   );
 };
 export default PostEdit;
-//{postId.createdAt=format(new Date(postId.createdAt), 'MMM d, yyyy')}

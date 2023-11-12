@@ -10,10 +10,7 @@ const PostsStyled = styled.div`
     border-radius: 20px;
     margin: 20px auto;
   }
-  .postsArea:hover {
-    box-shadow: 1px 2px 3px gray;
-    border: 0px solid #ffffff;
-  }
+
   .postsHead {
     display: flex;
     align-items: center;
@@ -28,14 +25,6 @@ const PostsStyled = styled.div`
     border-top: 1px solid #72a0c6;
     padding: 5px;
     margin: 5px;
-  }
-  .postValue {
-    padding: 0px 20px 20px 20px;
-    margin: 5px;
-    color: #757575;    
-  }
-  .postText {
-    word-break: break-word;
   }
   .postTitle {
     width: 100%;
@@ -54,15 +43,7 @@ const PostsStyled = styled.div`
       opacity: 0.7;
     }
   }
-  .postInfo {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid #72a0c6;
-  }
-  .postNumber {
-    padding: 5px;
-    margin: 5px;
-  }
+
 `;
 
 export default PostsStyled;

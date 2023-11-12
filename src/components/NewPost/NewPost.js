@@ -11,16 +11,13 @@ const NewPost = () => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
-
-  const [author, setAuthor] = useState("");
-
   const [topics, setTopics] = useState([]);
 
-  const [topicData, setTopicData] = useState("");
+  const [author, setAuthor] = useState(null);
+  const [topicData, setTopicData] = useState(null);
 
-  
   const userName = users.map((item) => ({ label: item.name, value: item.id }));
-  
+
   const topicTitle = topics.map((item) => ({
     label: item.title,
     value: item.id,
@@ -29,11 +26,37 @@ const NewPost = () => {
   const {
     register,
     handleSubmit,
-    reset,        
+    reset,
   } = useForm({
     defaultValues: {},
   });
-  
+
+  const submitPosts = async (value) => {
+    try {
+      const body = { ...value, userId: author.value, topicId: topicData.value };
+      await axios.post("http://localhost:3003/blog/posts", body);
+      successToast('Post is created');
+      navigate("/");
+    } catch (err) {
+      errorToast(err.response.data.message)
+      console.log(err);
+    }
+  };
+
+  const handleSelectUser = (author) => {
+    setAuthor(author);
+  };
+
+  const handleSelectTopic = (theme) => {
+    setTopicData(theme);
+  };
+
+  const resetSelections = () => {
+    setAuthor(null);
+    setTopicData(null);
+    reset();
+  }
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -46,17 +69,6 @@ const NewPost = () => {
     fetchUsers();
   }, []);
 
-  const submitPosts = async (value) => {
-    try {
-      const body = { ...value, userId: author, topicId: topicData };
-      await axios.post("http://localhost:3003/blog/posts", body);
-      successToast();
-      navigate("/");
-    } catch (err) {
-      errorToast(err.response.data.message)
-      console.log(err);
-    }
-  };
   useEffect(() => {
     const fetchTopics = async () => {
       try {
@@ -69,46 +81,40 @@ const NewPost = () => {
     fetchTopics();
   }, []);
 
-  const handleSelectUser = (author) => {
-    setAuthor(author.value);
-  };
-
-  const handleSelectTopic = (theme) => {
-    setTopicData(theme.value);
-  };
-
   return (
     <NewPostStyled>
-      <div className="postsArea">
-        <div className="postsHead">add new post:</div>
-        <div className="postBody">
+      <div className="post-area">
+        <div className="post-head">Add new post:</div>
+        <div className="post-body">
           <form onSubmit={handleSubmit(submitPosts)}>
-            <textArea
-              className="postInput"
+            <textarea
+              className="post-input"
               type="text"
-              {...register("postText", { required: true })}              
-              placeholder="add new post"
+              {...register("postText", { required: true })}
+              placeholder="Add new post"
             />
             <Select
-              className="createSelect"
+              className="post-select"
               options={userName}
               onChange={(value) => handleSelectUser(value)}
               placeholder="Select author..."
+              value={author}
             />
             <Select
-              className="createSelect"
+              className="post-select"
               options={topicTitle}
               onChange={(value) => handleSelectTopic(value)}
               placeholder="Select topic..."
+              value={topicData}
             />
-            <div className="editButtons">
-              <Button 
-              className="postButtonSend"
-              name = "save"/>
+            <div className="post-buttons">
               <Button
-                className="postButtonSend postButtonSend__clear"
-                handleClick={() => reset()}
-                name = "clear post"
+                className="post-button"
+                name = "Save"/>
+              <Button
+                className="post-button post-button__clear"
+                handleClick={resetSelections}
+                name = "Clear post"
               />
             </div>
           </form>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import PostsStyled from "./PostsStyled";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ const Posts = () => {
         const result = await axios.get("http://localhost:3003/blog/posts");
         setPosts(result.data);
       } catch (err) {
-        console.log(">>>>>>", err);
+        console.log(">>>>>>", err);//toast
       }
     };
     fetchData();
@@ -28,32 +28,34 @@ const Posts = () => {
       setPosts(newPostList);
       successToast("post is deleted");
     } catch (err) {
-      errorToast(err.response.data.message);
+      if (isAxiosError(err)) {
+        errorToast(err.response.data.message);
+      }
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
 
   return (
-    <PostsStyled>
+    <PostsStyled>      
       <div className="postsArea">
-        <div className="postsHead">Posts:</div>
+      <div className="postsHead">Posts:</div>           
         <div className="postBody">
-          <div className="postValue">
+          <div className="postValue">            
+            {posts.map((item, index) => (
+            <PostItem
+            key={index}//id
+            post={item}
+            handleClick={() => deletePost(item.id)}
+            />
+            ))}   
             <div className="postTitle">
               <Link to="/New">
                 <Button className="postAddButton" name="Add new post" />
               </Link>
-            </div>
-            {posts.map((item, index) => (
-            <PostItem
-            key={index}
-            post={item}
-            handleClick={() => deletePost(item.id)}
-            />
-            ))}
-          </div>
-        </div>
-      </div>
+            </div>         
+          </div>          
+        </div>               
+      </div>            
     </PostsStyled>
   );
 };

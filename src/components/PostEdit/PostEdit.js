@@ -11,24 +11,41 @@ import { enGB } from "date-fns/locale";
 
 const PostEdit = () => {
   const navigate = useNavigate();
-  let { id } = useParams();
+  const { id } = useParams(); // LET ? 
 
-  const [postId, setPostId] = useState({});
-
+  const [postId, setPostId] = useState({}); // ?? postID setPostID
+console.log(postId)
   useEffect(() => {
     const fetchDataId = async () => {
       try {
-        const result = await axios.get(
-          `http://localhost:3003/blog/posts/${id}`
-        );
-        const postData = { ...result.data, postText: result.data.post }; //data
-        setPostId(postData);
+        const result = await axios.get(`http://localhost:3003/blog/posts/${id}`);//вроде перенёс
+
+        //const postData = { ...result.data, postText: result.data.post };  //data
+
+        /**
+         * data = {
+         *  message: 'asd',
+         *  post: 'TEST',
+         *  id: 1
+         * }
+         * 
+         * newDate = {
+         *  message: 'asd',
+         *  post: 'TEST',
+         *  id: 1,
+         *  postText: 'TEST'
+         * }
+         */
+        setPostId(result);//? postData
+        console.log(result)
       } catch (err) {
         console.log(err);
       }
     };
     fetchDataId(id);
   }, []);
+  console.log(postId)
+  
 
   const updatePost = (event) => {
     try {
@@ -41,7 +58,10 @@ const PostEdit = () => {
 
   const sendPost = async () => {
     try {
-      await axios.put(`http://localhost:3003/blog/posts/${id}`, postId);
+      await axios.put(`http://localhost:3003/blog/posts/${id}`, {
+        postText: postId.text,//here
+        
+      });
       successToast("The post has been edited");
       navigate("/");
     } catch (err) {
@@ -51,7 +71,7 @@ const PostEdit = () => {
   };
 
   const date = postId?.createdAt && format(new Date(postId.createdAt), 'MMM d, yyyy', {locale: enGB});
-
+console.log(postId.post)
   return (
     <PostEditStyled>
       <div className="post-area">
@@ -61,8 +81,11 @@ const PostEdit = () => {
             <textarea
               className="post-input"
               type="text"
-              onChange={updatePost}
+              value={postId.postText}
+              onChange={updatePost}              
               placeholder="Add new post"
+              contenteditable="true"// check
+              rows="1"
             >
               {postId.postText}
             </textarea>
@@ -72,7 +95,7 @@ const PostEdit = () => {
               <div className="post-topic">
                 Topic:
                 {postId?.topics?.map((item, index) => (
-                  <div key = {`date${index}`}>{item?.title}</div>
+                  <div key={index.id}>{item?.title}</div>
                 ))}
               </div>
             )}

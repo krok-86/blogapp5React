@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const PostsStyled = styled.div`
   .postsArea {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column;     */
     width: 716px;
     height: 100%;
     border: 2px solid #d5dde0;
@@ -21,10 +21,15 @@ const PostsStyled = styled.div`
     margin: 5px;
     color: #72a0c6;
   }
-  .postBody {
+  .postBody {    
     border-top: 1px solid #72a0c6;
     padding: 5px;
-    margin: 5px;
+    margin: 5px;    
+  }
+  .postValue {
+    display: flex; 
+    flex-direction: column-reverse;
+    justify-content: space-evenly; 
   }
   .postTitle {
     width: 100%;

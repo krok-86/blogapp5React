@@ -7,16 +7,16 @@ const PostItemStyled = styled.div`
     margin: 5px;
     color: #757575;    
     border: 2px solid #d5dde0;
-    border-radius: 20px;
-
+    border-radius: 20px;    
   }
   .post-value:hover {
     box-shadow: 1px 2px 3px gray;
-    border: 0px solid #ffffff;
+    border: 2px solid transparent;    
   }
   .post-text {
     word-break: break-word;
     padding: 10px;
+    white-space: pre-wrap;   
   }
   .post-title {
     width: 100%;

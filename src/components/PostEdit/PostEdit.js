@@ -7,18 +7,19 @@ import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
+import { getPostById, putPostById } from "../../api/postApi";
 
 
 const PostEdit = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // LET ? 
+  const { id } = useParams();
+  const [postData, setPostData] = useState({}); // ?? postID setPostID
 
-  const [postId, setPostId] = useState({}); // ?? postID setPostID
-console.log(postId)
   useEffect(() => {
     const fetchDataId = async () => {
       try {
-        const result = await axios.get(`http://localhost:3003/blog/posts/${id}`);//вроде перенёс
+        const result = await getPostById(id);
+        // const result = await axios.get(`http://localhost:3003/blog/posts/${id}`);//вроде перенёс
 
         //const postData = { ...result.data, postText: result.data.post };  //data
 
@@ -36,21 +37,19 @@ console.log(postId)
          *  postText: 'TEST'
          * }
          */
-        setPostId(result);//? postData
-        console.log(result)
+        setPostData(result.data);//? postData
       } catch (err) {
         console.log(err);
       }
     };
     fetchDataId(id);
   }, []);
-  console.log(postId)
+  console.log(postData)
   
-
   const updatePost = (event) => {
     try {
-      const newPost = { ...postId, postText: event.target.value};
-      setPostId(newPost);
+      const newPost = { ...postData, post: event.target.value};
+      setPostData(newPost);
     } catch (err) {
       console.log(err);
     }
@@ -58,8 +57,13 @@ console.log(postId)
 
   const sendPost = async () => {
     try {
+      const result = await putPostById(id, {
+        postText: postData.post,//here
+        
+      });
+      result =  {kpostText: postData.post}
       await axios.put(`http://localhost:3003/blog/posts/${id}`, {
-        postText: postId.text,//here
+        postText: postData.post,//here
         
       });
       successToast("The post has been edited");
@@ -70,8 +74,8 @@ console.log(postId)
     }
   };
 
-  const date = postId?.createdAt && format(new Date(postId.createdAt), 'MMM d, yyyy', {locale: enGB});
-console.log(postId.post)
+  const date = postData?.createdAt && format(new Date(postData.createdAt), 'MMM d, yyyy', {locale: enGB});
+
   return (
     <PostEditStyled>
       <div className="post-area">
@@ -81,27 +85,27 @@ console.log(postId.post)
             <textarea
               className="post-input"
               type="text"
-              value={postId.postText}
+              value={postData.post}
               onChange={updatePost}              
               placeholder="Add new post"
-              contenteditable="true"// check
+              // contentEditable="true"// check
               rows="1"
             >
-              {postId.postText}
+              {postData.post}
             </textarea>
           <div className="post-info">
-            <div className="post-number">post #{postId.id}</div>
-            {!!postId?.topics?.length && (
+            <div className="post-number">post #{postData.id}</div>
+            {!!postData?.topics?.length && (
               <div className="post-topic">
                 Topic:
-                {postId?.topics?.map((item, index) => (
-                  <div key={index.id}>{item?.title}</div>
+                {postData?.topics?.map((item) => (
+                  <div key={item.id}>{item?.title}</div>
                 ))}
               </div>
             )}
             <div className="post-number">Date:{date}</div>
-            {postId.user?.name?.length && (
-              <div className="post-number">Author: {postId.user?.name}</div>
+            {postData.user?.name?.length && (
+              <div className="post-number">Author: {postData.user?.name}</div>
             )}
             <Button handleClick={sendPost} name="save" />
           </div>

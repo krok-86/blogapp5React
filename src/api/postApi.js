@@ -1,40 +1,43 @@
-import axios from "axios";
+import axiosInstance from ".";
 
 // const getPostById = (id) => {
 //     return axios.get('/...', {params: id})
 // }
 
-export const getPostById = (id) => {
-    return axios.get(`http://localhost:3003/blog/posts/${id}`, {params: id})//why {params: id}?
-}
-console.log(getPostById (1));
+const postUrl = '/posts';
+const userUrl = '/users';
+const topicUrl = '/topics';
 
-export const putPostById = (id) => {
-    return axios.put(`http://localhost:3003/blog/posts/${id}`, {params: id})//?
+//post block
+
+export const getPostById = async (id) => {
+    return await axiosInstance.get(`${postUrl}/${id}`)//why {params: id}?
 }
-console.log(putPostById (1));
+
+export const putPostById = (id, body) => {
+    return axiosInstance.put(`${postUrl}/${id}`, body);//?
+}
 
 export const getPosts = () => {
-    return axios.get("http://localhost:3003/blog/posts")
+    return axiosInstance.get(postUrl);
 }
-console.log(getPosts ());
 
 export const deletePostById = (id) => {
-    return axios.delete(`http://localhost:3003/blog/posts/${id}`, {params: id})//?
+    return axiosInstance.delete(`${postUrl}/${id}`)//?
 }
-console.log(deletePostById (1));
 
 export const postPosts = () => {
-    return axios.post("http://localhost:3003/blog/posts")
+    return axiosInstance.post(postUrl)
 }
-console.log(postPosts ());
+
+//user block
 
 export const getUsers = () => {
-    return axios.get("http://localhost:3003/blog/users")
+    return axiosInstance.get(userUrl);
 }
-console.log(getUsers ());
+
+// topic block
 
 export const getTopics = () => {
-    return axios.get("http://localhost:3003/blog/users")
+    return axiosInstance.get(topicUrl);
 }
-console.log(getTopics ());

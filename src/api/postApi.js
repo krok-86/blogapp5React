@@ -1,9 +1,5 @@
 import axiosInstance from ".";
 
-// const getPostById = (id) => {
-//     return axios.get('/...', {params: id})
-// }
-
 const postUrl = '/posts';
 const userUrl = '/users';
 const topicUrl = '/topics';
@@ -26,8 +22,8 @@ export const deletePostById = (id) => {
     return axiosInstance.delete(`${postUrl}/${id}`)//?
 }
 
-export const postPosts = () => {
-    return axiosInstance.post(postUrl)
+export const postPosts = (body) => {
+    return axiosInstance.post(postUrl, body)
 }
 
 //user block

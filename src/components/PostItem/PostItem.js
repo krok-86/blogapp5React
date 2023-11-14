@@ -9,19 +9,19 @@ const date = format(new Date(post.createdAt), 'MMM d, yyyy', {locale: enGB});
   return (
   <PostItemStyled>
   <div className="post-value">
-      <pre className="post-text">{post.post}</pre>
-      <div className="post-info">
+      
+      <div className="post-info">        
         <div className="post-number">
           Post #{post.id}
         </div>
         <div className="post-number post-topic">
           Topic:
-          {post.topics.map((item,index) => (
-            <div key={`topics${index}`}>{item?.title}</div>//!!!!
+          {post.topics.map((item) => (
+            <div key={item.id}>{item?.title}</div>
           ))}
         </div>
         <div className="post-number">
-          Created at<br/> {date}
+          <div>Created at</div><div>{date}</div> 
         </div>
         <div className="post-number">Author {post?.user?.name}</div>
         <Button
@@ -32,6 +32,7 @@ const date = format(new Date(post.createdAt), 'MMM d, yyyy', {locale: enGB});
           <Button name="Edit" />
         </Link>
       </div>
+      <pre className="post-text">{post.post}</pre>
     </div>
   </PostItemStyled>
   )

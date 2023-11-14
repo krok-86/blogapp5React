@@ -2,7 +2,6 @@ import React from "react";
 import PostEditStyled from "./PostEditStyled";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
 import { format } from "date-fns";
@@ -18,54 +17,28 @@ const PostEdit = () => {
   useEffect(() => {
     const fetchDataId = async () => {
       try {
-        const result = await getPostById(id);
-        // const result = await axios.get(`http://localhost:3003/blog/posts/${id}`);//вроде перенёс
-
-        //const postData = { ...result.data, postText: result.data.post };  //data
-
-        /**
-         * data = {
-         *  message: 'asd',
-         *  post: 'TEST',
-         *  id: 1
-         * }
-         * 
-         * newDate = {
-         *  message: 'asd',
-         *  post: 'TEST',
-         *  id: 1,
-         *  postText: 'TEST'
-         * }
-         */
-        setPostData(result.data);//? postData
-      } catch (err) {
-        console.log(err);
+        const result = await getPostById(id);        
+       setPostData(result.data);
+      } catch (err) { 
+        errorToast(err.response.data.message);  
+        console.log(">>>>>>", err);//toast     
       }
     };
     fetchDataId(id);
   }, []);
-  console.log(postData)
-  
+    
   const updatePost = (event) => {
     try {
       const newPost = { ...postData, post: event.target.value};
       setPostData(newPost);
     } catch (err) {
-      console.log(err);
+      console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
 
   const sendPost = async () => {
     try {
-      const result = await putPostById(id, {
-        postText: postData.post,//here
-        
-      });
-      result =  {kpostText: postData.post}
-      await axios.put(`http://localhost:3003/blog/posts/${id}`, {
-        postText: postData.post,//here
-        
-      });
+        await putPostById(id, {postText: postData.post});//!!      
       successToast("The post has been edited");
       navigate("/");
     } catch (err) {
@@ -87,10 +60,9 @@ const PostEdit = () => {
               type="text"
               value={postData.post}
               onChange={updatePost}              
-              placeholder="Add new post"
+             placeholder="Add new post"
               // contentEditable="true"// check
-              rows="1"
-            >
+              rows="1">
               {postData.post}
             </textarea>
           <div className="post-info">

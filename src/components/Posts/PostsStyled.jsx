@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const PostsStyled = styled.div`
-  .postsArea {
+  .posts-area {
     /* display: flex;
     flex-direction: column;     */
     width: 716px;
@@ -11,7 +11,7 @@ const PostsStyled = styled.div`
     margin: 20px auto;
   }
 
-  .postsHead {
+  .posts-head {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,23 +21,27 @@ const PostsStyled = styled.div`
     margin: 5px;
     color: #72a0c6;
   }
-  .postBody {    
+  .post-body {    
     border-top: 1px solid #72a0c6;
     padding: 5px;
     margin: 5px;    
   }
-  .postValue {
+  .post-value {
     display: flex; 
     flex-direction: column-reverse;
     justify-content: space-evenly; 
   }
-  .postTitle {
+  .post-button-area {
+    display: flex;
+    justify-content: space-between;   
+  }
+  /* .post-title {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     border: none;
-  }
-  .postAddButton {
+  } */
+  .post-add-button {
     border-radius: 50%;
     width: 70px;
     height: 70px;
@@ -47,8 +51,7 @@ const PostsStyled = styled.div`
     &:hover {
       opacity: 0.7;
     }
-  }
-
+  }  
 `;
 
 export default PostsStyled;

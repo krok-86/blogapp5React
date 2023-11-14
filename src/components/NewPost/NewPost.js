@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import NewPostStyled from "../NewPost/NewPostStyled";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import Button from "../Buttons/Button";
-import {successToast, errorToast} from "../Utilities/toasts"
+import { successToast, errorToast } from "../Utilities/toasts";
+import { postPosts, getUsers, getTopics } from "../../api/postApi";
 
 const NewPost = () => {
   const navigate = useNavigate();
@@ -16,29 +16,26 @@ const NewPost = () => {
   const [author, setAuthor] = useState(null);
   const [topicData, setTopicData] = useState(null);
 
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {},
+  });
+
   const userName = users.map((item) => ({ label: item.name, value: item.id }));
 
   const topicTitle = topics.map((item) => ({
     label: item.title,
     value: item.id,
   }));
- 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm({
-    defaultValues: {},
-  });
 
   const submitPosts = async (value) => {
     try {
       const body = { ...value, userId: author.value, topicId: topicData.value };
-      await axios.post("http://localhost:3003/blog/posts", body);
-      successToast('Post is created');
+      console.log(body);     
+      await postPosts(body);
+      successToast("Post is created");
       navigate("/");
     } catch (err) {
-      errorToast(err.response.data.message)
+      errorToast(err.response.data.message);
       console.log(err);
     }
   };
@@ -55,26 +52,30 @@ const NewPost = () => {
     setAuthor(null);
     setTopicData(null);
     reset();
-  }
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const result = await axios.get("http://localhost:3003/blog/users");
+      try {        
+        const result = await getUsers();
         setUsers(result.data);
       } catch (err) {
+        errorToast(err.response.data.message);
         console.log(">>>>>>", err);
       }
     };
     fetchUsers();
   }, []);
 
+  console.log("users>>>>>>>>", users);
+
   useEffect(() => {
     const fetchTopics = async () => {
-      try {
-        const result = await axios.get("http://localhost:3003/blog/topics");
+      try {        
+        const result = await getTopics();
         setTopics(result.data);
       } catch (err) {
+        errorToast(err.response.data.message);
         console.log(">>>>>>", err);
       }
     };
@@ -108,13 +109,11 @@ const NewPost = () => {
               value={topicData}
             />
             <div className="post-buttons">
-              <Button
-                className="post-button"
-                name = "Save"/>
+              <Button className="post-button" name="Save" />
               <Button
                 className="post-button post-button__clear"
                 handleClick={resetSelections}
-                name = "Clear post"
+                name="Clear post"
               />
             </div>
           </form>

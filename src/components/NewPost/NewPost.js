@@ -67,7 +67,7 @@ const NewPost = () => {
     fetchUsers();
   }, []);
 
-  console.log("users>>>>>>>>", users);
+  // console.log("users>>>>>>>>", users);
 
   useEffect(() => {
     const fetchTopics = async () => {

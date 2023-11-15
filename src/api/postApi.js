@@ -32,6 +32,10 @@ export const getUsers = () => {
     return axiosInstance.get(userUrl);
 }
 
+export const postUsers = (body) => {
+    return axiosInstance.post(userUrl,body);
+}
+
 // topic block
 
 export const getTopics = () => {

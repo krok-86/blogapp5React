@@ -8,14 +8,13 @@ const NewUserStyled = styled.div`
   .user-value {  
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 50%;
     height: 100%;
     padding: 0px 20px 20px 20px;
     margin: 5px;
     color: #757575;    
     border: 2px solid #d5dde0;
-    border-radius: 20px;
-    border: 2px solid red//////////////////////////
+    border-radius: 20px;    
   }
   .user-value:hover {
     box-shadow: 1px 2px 3px gray;
@@ -31,23 +30,29 @@ const NewUserStyled = styled.div`
     margin: 5px;
     color: #72a0c6;    
   }
- 
+  .user-img-wrap {
+    display:flex;
+  }
   .user-input {
     width: 60%;
     margin: 10px;
     border-radius: 20px;
     padding: 10px;
     background-color: #ececec; 
-    border: none;
-  }  
-    .user-button {
-   width: 30%;
-  } 
-  .user {
-    border: 2px solid red//////////////////////////
-  }    
-  .user2 {
-    border: 2px solid green//////////////////////////
+    border: 2px solid #d5dde0;
+    outline:none;
   }
+  .user-input:hover {
+    box-shadow: 1px 2px 3px gray;
+    border: 2px solid transparent;        
+  }
+    .user-button {
+   width: 30%;   
+  } 
+  .user-img {
+    width: 130px;
+    margin-bottom: 22px;
+    margin-top: 3px;   
+  }     
 `
 export default NewUserStyled;

@@ -13,7 +13,6 @@ const date = format(new Date(post.createdAt), 'MMM d, yyyy', {locale: enGB});
       <div className="post-info">        
         <div className="post-number">
           Post #{post.id}
-        </div>
         <div className="post-number post-topic">
           Topic:
           {post.topics.map((item) => (
@@ -34,6 +33,7 @@ const date = format(new Date(post.createdAt), 'MMM d, yyyy', {locale: enGB});
       </div>
       <pre className="post-text">{post.post}</pre>
     </div>
+  </div>
   </PostItemStyled>
   )
 }

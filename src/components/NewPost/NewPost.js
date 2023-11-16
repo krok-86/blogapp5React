@@ -20,17 +20,21 @@ const NewPost = () => {
     defaultValues: {},
   });
 
-  const userName = users.map((item) => ({ label: item.name, value: item.id }));
+  const savedUser = JSON.parse(localStorage.getItem('userValue'));
+  // setAuthor(savedUser);
+// console.log(author)
+  // const userName = users.map((item) => ({ label: item.name, value: item.id }));
 
   const topicTitle = topics.map((item) => ({
     label: item.title,
     value: item.id,
   }));
-
+console.log(savedUser.id)
   const submitPosts = async (value) => {
     try {
-      const body = { ...value, userId: author.value, topicId: topicData.value };
-      console.log(body);     
+      const body = { ...value, userId: savedUser.id, topicId: topicData.value };
+      console.log(topicData.value); 
+      console.log(savedUser.id); 
       await postPosts(body);
       successToast("Post is created");
       navigate("/");
@@ -40,16 +44,16 @@ const NewPost = () => {
     }
   };
 
-  const handleSelectUser = (author) => {
-    setAuthor(author);
-  };
+  // const handleSelectUser = (author) => {
+  //   setAuthor(author);
+  // };
 
   const handleSelectTopic = (theme) => {
     setTopicData(theme);
   };
 
   const resetSelections = () => {
-    setAuthor(null);
+    // setAuthor(null);
     setTopicData(null);
     reset();
   };
@@ -94,13 +98,14 @@ const NewPost = () => {
               {...register("postText", { required: true })}
               placeholder="Add new post"
             />
-            <Select
+            {/* <Select
               className="post-select"
               options={userName}
               onChange={(value) => handleSelectUser(value)}
               placeholder="Select author..."
               value={author}
-            />
+            /> */}
+            <div>{savedUser.name}</div>
             <Select
               className="post-select"
               options={topicTitle}

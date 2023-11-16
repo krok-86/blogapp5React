@@ -2,6 +2,7 @@ import axiosInstance from ".";
 
 const postUrl = '/posts';
 const userUrl = '/users';
+const userAuthUrl = '/users/auth';
 const topicUrl = '/topics';
 
 //post block
@@ -34,6 +35,10 @@ export const getUsers = () => {
 
 export const postUsers = (body) => {
     return axiosInstance.post(userUrl,body);
+}
+
+export const postUserAuth = (body) => {
+    return axiosInstance.post(userAuthUrl,body);
 }
 
 // topic block

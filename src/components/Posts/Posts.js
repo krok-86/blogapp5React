@@ -25,10 +25,18 @@ const Posts = () => {
 
   const deletePost = async (id) => {
     try {
+      const savedUser = JSON.parse(localStorage.getItem('userValue'));
+      console.log(savedUser.id);
+      console.log(id)     
+      if(savedUser.id==id){            
       await deletePostById (id)
+      
+      console.log(id)
+        console.log(savedUser.id)  
       const newPostList = posts.filter((item) => item.id !== id);
       setPosts(newPostList);
       successToast("post is deleted");
+      }
     } catch (err) {
       if (isAxiosError(err)) {
         errorToast(err.response.data.message);
@@ -36,7 +44,7 @@ const Posts = () => {
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-
+  
   return (
     <PostsStyled>      
       <div className="posts-area">
@@ -49,17 +57,14 @@ const Posts = () => {
             post={item}
             handleClick={() => deletePost(item.id)}/>
             ))}
-            <div className="post-button-area">
-            {/* <div className="post-title-post"> */}
+            <div className="post-button-area">            
               <Link to="/createPost">
                 <Button className="post-add-button" name="Add new post" />
-              </Link>
-            {/* </div>    */}
-            {/* <div className="post-title-user"> */}
-              <Link to="/createUser">
+              </Link>            
+              <Link to="/registration">
                 <Button className="post-add-button" name="Add new user" />
               </Link>
-            {/* </div>  */}
+            
             </div>
           </div>          
         </div>               

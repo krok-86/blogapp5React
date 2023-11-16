@@ -5,15 +5,15 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
-import { postPosts, getUsers, getTopics } from "../../api/postApi";
+import { postPosts, getTopics } from "../../api/postApi";
 
 const NewPost = () => {
   const navigate = useNavigate();
 
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [topics, setTopics] = useState([]);
 
-  const [author, setAuthor] = useState(null);
+  // const [author, setAuthor] = useState(null);
   const [topicData, setTopicData] = useState(null);
 
   const { register, handleSubmit, reset } = useForm({
@@ -25,16 +25,20 @@ const NewPost = () => {
 // console.log(author)
   // const userName = users.map((item) => ({ label: item.name, value: item.id }));
 
+  useEffect(() => {
+    if (!savedUser) {
+      navigate('/auth', { replace: true });
+      errorToast('Please, log in. Post creteion is allowed only for authentificated users');
+    }
+  }, []);
+
   const topicTitle = topics.map((item) => ({
     label: item.title,
     value: item.id,
   }));
-console.log(savedUser.id)
   const submitPosts = async (value) => {
     try {
       const body = { ...value, userId: savedUser.id, topicId: topicData.value };
-      console.log(topicData.value); 
-      console.log(savedUser.id); 
       await postPosts(body);
       successToast("Post is created");
       navigate("/");
@@ -58,18 +62,18 @@ console.log(savedUser.id)
     reset();
   };
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {        
-        const result = await getUsers();
-        setUsers(result.data);
-      } catch (err) {
-        errorToast(err.response.data.message);
-        console.log(">>>>>>", err);
-      }
-    };
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {        
+  //       const result = await getUsers();
+  //       setUsers(result.data);
+  //     } catch (err) {
+  //       errorToast(err.response.data.message);
+  //       console.log(">>>>>>", err);
+  //     }
+  //   };
+  //   fetchUsers();
+  // }, []);
 
   // console.log("users>>>>>>>>", users);
 
@@ -96,7 +100,7 @@ console.log(savedUser.id)
               className="post-input"
               type="text"
               {...register("postText", { required: true })}
-              placeholder="Add new post"
+              placeholder="Enter your post here..."
             />
             {/* <Select
               className="post-select"
@@ -105,7 +109,6 @@ console.log(savedUser.id)
               placeholder="Select author..."
               value={author}
             /> */}
-            <div>{savedUser.name}</div>
             <Select
               className="post-select"
               options={topicTitle}
@@ -113,6 +116,7 @@ console.log(savedUser.id)
               placeholder="Select topic..."
               value={topicData}
             />
+            <div className="post-author"> Author: {savedUser?.name}</div>
             <div className="post-buttons">
               <Button className="post-button" name="Save" />
               <Button

@@ -17,6 +17,7 @@ const NewPostStyled = styled.div`
   }
   .post-button {
     height: 40px;
+    min-width: 80px;
     border-radius: 10px;
     border: none;
     background-color: #72a0c6;
@@ -24,6 +25,10 @@ const NewPostStyled = styled.div`
     &__clear {
       background-color: #e59d95;
     }
+  }
+  .post-author {
+    color: grey;
+    text-align: end;
   }
   input {
     width: 100%;

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import unknown from "../../img/Unknown_person.jpg";
 import { postUsers, postUserAuth } from "../../api/postApi";
 import { successToast, errorToast } from "../Utilities/toasts";
-import { useState } from "react";
+
 
 const NewUser = ({ isRegistration }) => {
   const navigate = useNavigate(); 
@@ -74,9 +74,10 @@ const NewUser = ({ isRegistration }) => {
             <input
               className="user-input"
               placeholder="password"
-              type="text"
+              type="password"
               {...register("password", { required: true })}
             ></input>
+            <>
             <Button
               className="user-button"
               //   handleClick={handleClick}
@@ -88,6 +89,7 @@ const NewUser = ({ isRegistration }) => {
                 <Button className="user-button" name="authorization" />
               </Link>
             )}
+            </>
           </form>
           <img src={unknown} alt="unknown" className="user-img" />
         </div>

@@ -44,15 +44,16 @@ const NewUserStyled = styled.div`
   }
   .user-input:hover {
     box-shadow: 1px 2px 3px gray;
-    border: 2px solid transparent;        
+    border: 2px solid transparent;
   }
     .user-button {
-   width: 30%;   
+   width: 30%;
   } 
   .user-img {
     width: 130px;
     margin-bottom: 22px;
-    margin-top: 3px;   
+    margin-top: 3px;
+    border-radius: 20px;
   }     
 `
 export default NewUserStyled;

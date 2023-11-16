@@ -23,19 +23,16 @@ const Posts = () => {
     fetchData();
   }, []);
 
-  const deletePost = async (id) => {
+  const deletePost = async (id, authorId) => {
     try {
       const savedUser = JSON.parse(localStorage.getItem('userValue'));
-      console.log(savedUser.id);
-      console.log(id)     
-      if(savedUser.id==id){            
+      if(savedUser.id==authorId){
       await deletePostById (id)
-      
-      console.log(id)
-        console.log(savedUser.id)  
       const newPostList = posts.filter((item) => item.id !== id);
       setPosts(newPostList);
       successToast("post is deleted");
+      } else {
+        errorToast('You cant delete this post')
       }
     } catch (err) {
       if (isAxiosError(err)) {
@@ -44,9 +41,9 @@ const Posts = () => {
       console.log(">>>>>>>>>>>>>>>>", err);
     }
   };
-  
+
   return (
-    <PostsStyled>      
+    <PostsStyled>
       <div className="posts-area">
       <div className="posts-head">Posts:</div>           
         <div className="post-body">
@@ -55,14 +52,17 @@ const Posts = () => {
             <PostItem
             key={item.id}
             post={item}
-            handleClick={() => deletePost(item.id)}/>
+            handleClick={() => deletePost(item.id, item.user?.id)}/>
             ))}
             <div className="post-button-area">            
               <Link to="/createPost">
                 <Button className="post-add-button" name="Add new post" />
-              </Link>            
+              </Link>
+              <Link to="/auth">
+                <Button className="post-add-button" name="Log in" />
+              </Link>
               <Link to="/registration">
-                <Button className="post-add-button" name="Add new user" />
+                <Button className="post-add-button" name="Sign up" />
               </Link>
             
             </div>

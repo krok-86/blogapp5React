@@ -7,7 +7,7 @@ import { postUsers } from "../../api/postApi";
 import { successToast, errorToast } from "../Utilities/toasts";
 // import { useState } from "react";
 
-const NewUser = () => {
+const NewUser = ({ isRegistration }) => {
   // const [user, setUser] = useState({});
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {},
@@ -16,9 +16,16 @@ const NewUser = () => {
     try {
       console.log(value); 
       const body = {...value, name: value.name, email: value.email, password: value.password};
-      console.log(body);     
+      console.log(body);
+      if (isRegistration) {
       await postUsers(body);
       successToast("User is created");
+      return;
+      }
+
+      // вставить соединение с беком для аутентификации
+      console.log('запрос на бек для аутентификации, должен вернуть данные юзера - его имя, почту, id')
+
       // navigate("/");
     } catch (err) {
       errorToast(err.response.data.message);
@@ -28,17 +35,21 @@ const NewUser = () => {
   const resetForm = () => {
 reset()
   }
+
+const title = isRegistration ? 'Registration' : 'Authorization';
+
   return (
     <NewUserStyled>
       <div className="user-value">
-        <div className="user-text">new user</div>
+        <div className="user-text">{title}</div>
         <div className="user-img-wrap">
           <form onSubmit={handleSubmit(submitForm)}>
-            <input className="user-input"
+            {isRegistration && <input className="user-input"
             placeholder="name"
             type="text"
             {...register("name", { required: true })}
             ></input>
+  }
             <input className="user-input" 
             placeholder="email"
             type="text"
@@ -52,7 +63,7 @@ reset()
             <Button
               className="user-button"
               //   handleClick={handleClick}
-              name="registration"
+              name="submit"
             />
             {/* <Link to={`/postEdit/${post.id}`}> */}
           <Button name="clear form" 

@@ -25,9 +25,14 @@ const router = createBrowserRouter([
     element: <PostEdit />,
   },
   {
-    path: "/createUser",
-    element: <NewUser />,
+    path: "/registration",
+    element: <NewUser isRegistration={true}/>,
+  },
+  {
+    path: "/auth",
+    element: <NewUser isRegistration={false}/>,
   }
+
 
 ])
 

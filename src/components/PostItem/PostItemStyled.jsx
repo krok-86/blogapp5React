@@ -28,6 +28,6 @@ const PostItemStyled = styled.div`
     display: grid;
     grid-template-columns: 60px 1fr 1fr 1fr 60px 60px;
     border-top: 1px solid #72a0c6;
-  }
+  }   
 `
 export default PostItemStyled;

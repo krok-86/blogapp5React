@@ -10,7 +10,6 @@ const PostsStyled = styled.div`
     border-radius: 20px;
     margin: 20px auto;
   }
-
   .posts-head {
     display: flex;
     align-items: center;
@@ -25,6 +24,21 @@ const PostsStyled = styled.div`
     border-top: 1px solid #72a0c6;
     padding: 5px;
     margin: 5px;    
+  }
+  .post-user {
+    display: flex;
+    justify-content: end;
+    font-size: 10px;
+    margin: 10px;
+    color: #8dd68d;    
+  }
+  .post-user-logOut {
+    display: flex;
+    justify-content: end;
+    font-size: 12px;
+    margin: 10px;
+    color: #f14630;
+    cursor: pointer;
   }
   .post-value {
     display: flex; 

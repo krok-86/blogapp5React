@@ -20,15 +20,17 @@ const NewPost = () => {
     defaultValues: {},
   });
 
-  const savedUser = JSON.parse(localStorage.getItem('userValue'));
+  const savedUser = JSON.parse(localStorage.getItem("userValue"));
   // setAuthor(savedUser);
-// console.log(author)
+  // console.log(author)
   // const userName = users.map((item) => ({ label: item.name, value: item.id }));
 
   useEffect(() => {
     if (!savedUser) {
-      navigate('/auth', { replace: true });
-      errorToast('Please, log in. Post creteion is allowed only for authentificated users');
+      navigate("/auth", { replace: true });
+      errorToast(
+        "Please, log in. Post creteion is allowed only for authentificated users"
+      );
     }
   }, []);
 
@@ -36,12 +38,13 @@ const NewPost = () => {
     label: item.title,
     value: item.id,
   }));
+  
   const submitPosts = async (value) => {
     try {
       const body = { ...value, userId: savedUser.id, topicId: topicData.value };
       await postPosts(body);
       successToast("Post is created");
-      navigate("/");
+      navigate("/");      
     } catch (err) {
       errorToast(err.response.data.message);
       console.log(err);
@@ -64,7 +67,7 @@ const NewPost = () => {
 
   // useEffect(() => {
   //   const fetchUsers = async () => {
-  //     try {        
+  //     try {
   //       const result = await getUsers();
   //       setUsers(result.data);
   //     } catch (err) {
@@ -79,7 +82,7 @@ const NewPost = () => {
 
   useEffect(() => {
     const fetchTopics = async () => {
-      try {        
+      try {
         const result = await getTopics();
         setTopics(result.data);
       } catch (err) {
@@ -115,6 +118,7 @@ const NewPost = () => {
               onChange={(value) => handleSelectTopic(value)}
               placeholder="Select topic..."
               value={topicData}
+              required="true"
             />
             <div className="post-author"> Author: {savedUser?.name}</div>
             <div className="post-buttons">

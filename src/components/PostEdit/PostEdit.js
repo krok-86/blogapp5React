@@ -12,7 +12,7 @@ import { getPostById, putPostById } from "../../api/postApi";
 const PostEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [postData, setPostData] = useState({}); // ?? postID setPostID
+  const [postData, setPostData] = useState({}); 
 
   useEffect(() => {
     const fetchDataId = async () => {

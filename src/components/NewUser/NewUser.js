@@ -17,14 +17,12 @@ const NewUser = ({ isRegistration }) => {
 
   const submitForm = async (value) => {
     try {
-      console.log(value);
       const body = {
         ...value,
         name: value.name,
         email: value.email,
         password: value.password,
-      };
-      console.log(body);
+      };      
       if (isRegistration) {
         await postUsers(body);
         successToast("User is created");
@@ -36,8 +34,7 @@ const NewUser = ({ isRegistration }) => {
           email: userData.data.email
         }
         localStorage.setItem('userValue', JSON.stringify(userValue));        
-        successToast("User is authorized");        
-        
+        successToast("User is authorized");       
       }
       navigate("/");
     } catch (err) {

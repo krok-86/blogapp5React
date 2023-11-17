@@ -9,6 +9,12 @@ import { getPosts, deletePostById } from "../../api/postApi";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
+  const [logOut, setLogOut] = useState('');
+  const savedUser = JSON.parse(localStorage.getItem('userValue'));  
+
+const exitLogIn = () => {
+  setLogOut(localStorage.removeItem('userValue'));  
+}
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,15 +23,22 @@ const Posts = () => {
         setPosts(result.data);
       } catch (err) {
         errorToast(err.response.data.message); 
-        console.log(">>>>>>", err);//toast
+        console.log(">>>>>>", err);
       }
     };
     fetchData();
   }, []);
+  
+  // /**
+  //  * Func to delete post
+  //  * @param {number} id - id of item to delete 
+  //  * @param {number} authorId id of author
+  //  */
+  // deletePost(10,)
 
   const deletePost = async (id, authorId) => {
     try {
-      const savedUser = JSON.parse(localStorage.getItem('userValue'));
+      
       if(savedUser.id==authorId){
       await deletePostById (id)
       const newPostList = posts.filter((item) => item.id !== id);
@@ -40,13 +53,18 @@ const Posts = () => {
       }
       console.log(">>>>>>>>>>>>>>>>", err);
     }
-  };
-
+  };  
+  
   return (
     <PostsStyled>
       <div className="posts-area">
-      <div className="posts-head">Posts:</div>           
-        <div className="post-body">
+      <div className="posts-head">Posts:</div>         
+          <div className="post-body">
+          <div className="post-user">Log in: {savedUser?.name}</div>
+          <div className="post-user">{savedUser?.email}</div>
+          <div  onClick = {exitLogIn}
+          className="post-user-logOut"
+          >Log out</div>
           <div className="post-value">            
             {posts.map((item) => (
             <PostItem

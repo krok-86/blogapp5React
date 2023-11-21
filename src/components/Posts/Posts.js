@@ -6,27 +6,36 @@ import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
 import PostItem from "../PostItem/PostItem";
 import { getPosts, deletePostById } from "../../api/postApi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "../../redux/slices/posts";
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
-  const [logOut, setLogOut] = useState("");
+  const dispatch = useDispatch();
+  const {posts} = useSelector ((state) => state.posts);
+  const isPostsLoading = posts.status === 'loading';
+
+  // const [postsData, setPostsData] = useState([]);
+
+  // const [logOut, setLogOut] = useState("");
+
   const savedUser = JSON.parse(localStorage.getItem("userValue"));
 
-  const exitLogIn = () => {
-    setLogOut(localStorage.removeItem("userValue"));
-  };
+  // const exitLogIn = () => {
+  //   setLogOut(localStorage.removeItem("userValue"));
+  // };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getPosts();
-        setPosts(result.data);
-      } catch (err) {
-        errorToast(err.response.data.message);
-        console.log(">>>>>>", err);
-      }
-    };
-    fetchData();
+    dispatch(fetchPosts());
+    // const fetchData = async () => {
+    //   try {
+    //     const result = await getPosts();
+    //     setPosts(result.data);
+    //   } catch (err) {
+    //     errorToast(err.response.data.message);
+    //     console.log(">>>>>>", err);
+    //   }
+    // };
+    // fetchData();
   }, []);
 
   // /**
@@ -38,14 +47,14 @@ const Posts = () => {
 
   const deletePost = async (id, authorId) => {
     try {
-      if (savedUser.id === authorId) {
+      //if (savedUser.id === authorId) {//?
         await deletePostById(id);
-        const newPostList = posts.filter((item) => item.id !== id);
-        setPosts(newPostList);
+        const newPostList = posts.filter((obj) => obj.id !== id);
+        dispatch(newPostList);
         successToast("post is deleted");
-      } else {
-        errorToast("You cant delete this post");
-      }
+      // } else {
+      //   errorToast("You cant delete this post");
+      // }
     } catch (err) {
       if (isAxiosError(err)) {
         errorToast(err.response.data.message);
@@ -59,17 +68,17 @@ const Posts = () => {
       <div className="posts-area">
         <div className="posts-head">Posts:</div>
         <div className="post-body">
-          <div className="post-user">Log in: {savedUser?.name}</div>
+          {/* <div className="post-user">Log in: {savedUser?.name}</div>
           <div className="post-user">{savedUser?.email}</div>
           <div onClick={exitLogIn} className="post-user-logOut">
             Log out
-          </div>
+          </div> */}
           <div className="post-value">
-            {posts.map((item) => (
+            {posts.items.map((obj) => (
               <PostItem
-                key={item.id}
-                post={item}
-                handleClick={() => deletePost(item.id, item.user?.id)}
+                key={obj.id}
+                post={obj}
+                handleClick={() => deletePost(obj.id, obj.user?.id)}
               />
             ))}
             <div className="post-button-area">

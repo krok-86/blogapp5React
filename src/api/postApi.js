@@ -1,9 +1,10 @@
 import axiosInstance from ".";
 
 const postUrl = '/posts';
-const userUrl = '/users';
-const userAuthUrl = '/users/auth';
 const topicUrl = '/topics';
+const userRegUrl = '/users/registration';
+const userAuthUrl = '/users/authorization';
+const userAuthMeUrl = '/users/authorization/me';
 
 //post block
 
@@ -29,16 +30,20 @@ export const postPosts = (body) => {
 
 //user block
 
-export const getUsers = () => {
-    return axiosInstance.get(userUrl);
-}
+// export const getUsers = () => {
+//     return axiosInstance.get(userUrl);
+// }
 
-export const postUsers = (body) => {
-    return axiosInstance.post(userUrl,body);
+export const postUserReg = (body) => {
+    return axiosInstance.post(userRegUrl,body);
 }
 
 export const postUserAuth = (body) => {
     return axiosInstance.post(userAuthUrl,body);
+}
+
+export const postUserAuthMe = (body) => {
+    return axiosInstance.post(userAuthMeUrl,body);
 }
 
 // topic block

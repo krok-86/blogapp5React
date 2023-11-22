@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postUserAuth } from "../../api/postApi";
 
-export const fetchUserData = createAsyncThunk('auth/fetchUserData', async (params) => {
-const { data } = await postUserAuth('authorization', params)
+export const fetchAuth = createAsyncThunk('authorization/fetchAuth', async (params) => {
+const { data } = await postUserAuth(params)
 return data;
 });
 
@@ -13,21 +13,30 @@ const initialState = {
 
 const authSlice = createSlice({
     name: "auth",
-    initialState,    
+    initialState, 
+    redusers: {
+      logout: (state) => {
+        state.data = null;
+      }
+    },   
     extraReducers: {
-      [fetchUserData.pending]: (state) => {
+      [fetchAuth.pending]: (state) => {
         state.status = "loading";
         state.data = null;
       },
-      [fetchUserData.fulfilled]: (state, action) => {
+      [fetchAuth.fulfilled]: (state, action) => {
         state.status = "loaded";
-        state.data = action.payload;;
+        state.data = action.payload;
       },
-      [fetchUserData.rejected]: (state) => {
+      [fetchAuth.rejected]: (state) => {
         state.status = "error";
         state.data = null;
       },
     },
   });
   
+  export const selectIsAuth = (state) => Boolean(state.auth.data);
+
   export const authReducer = authSlice.reducer;
+
+  export const {logout} = authSlice.actions;

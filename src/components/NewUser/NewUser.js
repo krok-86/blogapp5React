@@ -4,19 +4,36 @@ import Button from "../Buttons/Button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import unknown from "../../img/Unknown_person.jpg";
-import { postUsers, postUserAuth } from "../../api/postApi";
+import { postUserReg, postUserAuth } from "../../api/postApi";
 import { successToast, errorToast } from "../Utilities/toasts";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
 
 
 const NewUser = ({ isRegistration }) => {
   const navigate = useNavigate(); 
 
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {},
+  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
+  
+  const { 
+    register, 
+    handleSubmit, 
+    reset,
+    setError,
+    formState: { errors, isValid }, 
+  } = useForm({
+    defaultValues: {
+      name: '',
+      email: 'formalin@mail.ru',//test
+      password: 'formalin',// test
+    },   
+    mode: "onChange"
   });
 
   const submitForm = async (value) => {
-    try {
+   
+    try {      
       const body = {
         ...value,
         name: value.name,
@@ -24,19 +41,25 @@ const NewUser = ({ isRegistration }) => {
         password: value.password,
       };      
       if (isRegistration) {
-        await postUsers(body);
+        await postUserReg(body);
         successToast("User is created");
-      } else {
-        const userData = await postUserAuth(body);        
-        const userValue = {
-          id: userData.data.id, 
-          name: userData.data.name, 
-          email: userData.data.email
-        }
-        localStorage.setItem('userValue', JSON.stringify(userValue));        
+      } else {          
+        const data = await dispatch(fetchAuth(value));
+        if ('token' in data.payload) {
+          window.localStorage.setItem('token', data.payload.token)
+        } else { alert ("Wrong!!!!!!!!!!!")}
+        // const userData = await postUserAuth(body); 
+        // const userValue = {
+        //    id: userData.data.id, 
+        //    name: userData.data.name, 
+        //    email: userData.data.email
+        //  }
+       
+          // dispatch(fetchAuth(body)) 
+        // localStorage.setItem('userValue', JSON.stringify(userValue));        
         successToast("User is authorized");       
       }
-      navigate("/");
+      navigate("/");      
     } catch (err) {
       errorToast(err.response.data.message);
       console.log(err);
@@ -58,27 +81,40 @@ const NewUser = ({ isRegistration }) => {
               <input
                 className="user-input"
                 placeholder="name"
+                label="Name"
+                error={Boolean(errors.name?.message)}//??? not work
+                helperText={errors.name?.message}// is it correct? may be toast
                 type="text"
-                {...register("name", { required: true })}
+                {...register("name", { required: "add name" })}
+                fullWidth //?
               ></input>
             )}
             <input
               className="user-input"
               placeholder="email"
-              type="text"
-              {...register("email", { required: true })}
+              label="E-mail"
+              error={Boolean(errors.email?.message)}//??? not work
+              helperText={errors.email?.message}// is it correct? may be toast
+              type="email"
+              {...register("email", { required: "add email" })}
+              fullWidth //?
             ></input>
             <input
               className="user-input"
               placeholder="password"
+              label="Password"
+              error={Boolean(errors.password?.message)}//??? not work
+              helperText={errors.password?.message}// is it correct? may be toast
               type="password"
-              {...register("password", { required: true })}
+              {...register("password", { required: "add password" })}
+              fullWidth //?
             ></input>
             <>
             <Button
               className="user-button"
               //   handleClick={handleClick}
-              name="submit"
+              type="submit"//??
+              name="submit"//??
             />
             <Button name="clear form" handleClick={resetForm} />
             {isRegistration && (

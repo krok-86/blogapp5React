@@ -8,12 +8,20 @@ import PostItem from "../PostItem/PostItem";
 import { getPosts, deletePostById } from "../../api/postApi";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../../redux/slices/posts";
+import { logout, selectIsAuth } from "../../redux/slices/auth";
 
 const Posts = () => {
   const dispatch = useDispatch();
+  
   const {posts} = useSelector ((state) => state.posts);
-  const isPostsLoading = posts.status === 'loading';
+  // const isPostsLoading = posts.status === 'loading';
+  const isAuth = useSelector(selectIsAuth);
 
+  const onClickLogOut = () => {
+// if(window.confirm('Do you really want to go out?')){
+  dispatch(logout())
+// }
+  }
   // const [postsData, setPostsData] = useState([]);
 
   // const [logOut, setLogOut] = useState("");
@@ -68,11 +76,12 @@ const Posts = () => {
       <div className="posts-area">
         <div className="posts-head">Posts:</div>
         <div className="post-body">
-          {/* <div className="post-user">Log in: {savedUser?.name}</div>
-          <div className="post-user">{savedUser?.email}</div>
-          <div onClick={exitLogIn} className="post-user-logOut">
+          { isAuth && (<div className="post-user">Log in: Vasia
+          <div className="post-user">123email.ru</div> 
+          <div onClick={onClickLogOut} className="post-user-logOut">
             Log out
-          </div> */}
+          </div>
+          </div> )}
           <div className="post-value">
             {posts.items.map((obj) => (
               <PostItem

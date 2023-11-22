@@ -3,7 +3,7 @@ import axiosInstance from ".";
 const postUrl = '/posts';
 const topicUrl = '/topics';
 const userRegUrl = '/users/registration';
-const userAuthUrl = '/users/authorization';
+const userAuthUrl = 'users/authorization';
 const userAuthMeUrl = '/users/authorization/me';
 
 //post block

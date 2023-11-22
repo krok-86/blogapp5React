@@ -30,14 +30,14 @@ const PostItem = ({ post, handleClick }) => {
             <div>{date}</div>
           </div>
           <div className="post-number">Author {post?.user?.name}</div>
-          {isAuthor && (
+          {/* {isAuthor && ( */}
             <>
               <Button handleClick={handleClick} name="Delete" />
               <Link to={`/postEdit/${post.id}`}>
                 <Button name="Edit" />
               </Link>
             </>
-          )}
+          {/* )} */}
         </div>
         <pre className="post-text">{post.post}</pre>
       </div>

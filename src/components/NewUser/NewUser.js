@@ -79,28 +79,23 @@ const NewUser = ({ isRegistration }) => {
           <form onSubmit={handleSubmit(submitForm)}>
             {isRegistration && (
               <input
-                className="user-input"
+                className={errors.name ? "user-input error" : "user-input"}
                 placeholder="name"
                 label="Name"
-                error={Boolean(errors.name?.message)}//??? not work
-                helperText={errors.name?.message}// is it correct? may be toast
                 type="text"
                 {...register("name", { required: "add name" })}
-                fullWidth //?
-              ></input>
+              />
             )}
             <input
-              className="user-input"
+              className={errors.email ? "user-input error" : "user-input"}
               placeholder="email"
               label="E-mail"
-              error={Boolean(errors.email?.message)}//??? not work
-              helperText={errors.email?.message}// is it correct? may be toast
               type="email"
               {...register("email", { required: "add email" })}
               fullWidth //?
-            ></input>
+            />
             <input
-              className="user-input"
+              className={errors.password ? "user-input error" : "user-input"}
               placeholder="password"
               label="Password"
               error={Boolean(errors.password?.message)}//??? not work
@@ -109,7 +104,7 @@ const NewUser = ({ isRegistration }) => {
               {...register("password", { required: "add password" })}
               fullWidth //?
             ></input>
-            <>
+            <div>
             <Button
               className="user-button"
               //   handleClick={handleClick}
@@ -122,7 +117,7 @@ const NewUser = ({ isRegistration }) => {
                 <Button className="user-button" name="authorization" />
               </Link>
             )}
-            </>
+            </div>
           </form>
           <img src={unknown} alt="unknown" className="user-img" />
         </div>

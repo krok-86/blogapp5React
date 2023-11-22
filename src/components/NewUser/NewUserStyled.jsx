@@ -55,5 +55,8 @@ const NewUserStyled = styled.div`
     margin-top: 3px;
     border-radius: 20px;
   }     
+  .error {
+    border: 1px solid red;
+  }
 `
 export default NewUserStyled;

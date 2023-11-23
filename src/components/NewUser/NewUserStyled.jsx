@@ -47,7 +47,7 @@ const NewUserStyled = styled.div`
     border: 2px solid transparent;
   }
     .user-button {
-   width: 30%;
+   min-width: 30%;
   } 
   .user-img {
     width: 130px;
@@ -57,6 +57,10 @@ const NewUserStyled = styled.div`
   }     
   .error {
     border: 1px solid red;
+  }
+  .form-buttons {
+    display: flex;
+    flex-flow: row nowrap;
   }
 `
 export default NewUserStyled;

@@ -50,12 +50,9 @@ const NewUser = ({ isRegistration }) => {
        }
         successToast("User is created");
       } else {          
-        const data = await dispatch(fetchAuth(value));    
-        if(!data.payload){
-           return alert ("Wrong!!!!!!!!!!!")//fix
-        }    
-        if ('token' in data.payload) {
-          window.localStorage.setItem('token', data.payload.token)
+        const data = await dispatch(fetchAuth(value)).unwrap();
+        if ('token' in data) {
+          window.localStorage.setItem('token', data.token)
         }
         // const userData = await postUserAuth(body); 
         // const userValue = {
@@ -70,7 +67,7 @@ const NewUser = ({ isRegistration }) => {
       }
       navigate("/");      
     } catch (err) {
-      errorToast(err.response.data.message);
+      errorToast(err.message);
       console.log(err);
     }
   };
@@ -111,7 +108,7 @@ const NewUser = ({ isRegistration }) => {
               type="password"
               {...register("password", { required: "add password" })}
               ></input>
-            <div>
+            <div className='form-buttons'>
             <Button
               className="user-button"
               //   handleClick={handleClick}

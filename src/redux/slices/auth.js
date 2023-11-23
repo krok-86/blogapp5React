@@ -36,7 +36,7 @@ const authSlice = createSlice({
       },
       [fetchReg.fulfilled]: (state, action) => {
         state.status = "loaded";
-        state.data = action.payload;
+        state.data = action.payload.userData;
       },
       [fetchReg.rejected]: (state) => {
         state.status = "error";
@@ -48,7 +48,7 @@ const authSlice = createSlice({
       },
       [fetchAuth.fulfilled]: (state, action) => {
         state.status = "loaded";
-        state.data = action.payload;
+        state.data = action.payload.userData;
       },
       [fetchAuth.rejected]: (state) => {
         state.status = "error";
@@ -70,6 +70,7 @@ const authSlice = createSlice({
   });
   
   export const selectIsAuth = (state) => Boolean(state.auth.data);
+  export const userData = (state) => Boolean(state.auth);
 
   export const authReducer = authSlice.reducer;
 

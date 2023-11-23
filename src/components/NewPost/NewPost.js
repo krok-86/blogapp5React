@@ -44,7 +44,7 @@ const NewPost = () => {
   
   const submitPosts = async (value) => {
     try {
-      const body = { ...value, userId: userData.userData.id, topicId: topicData.value };
+      const body = { ...value, userId: userData.id, topicId: topicData.value };
       await postPosts(body);
       successToast("Post is created");
       navigate("/");      
@@ -123,7 +123,7 @@ const NewPost = () => {
               value={topicData}
               required="true"
             />
-            <div className="post-author"> Author: {userData?.userData?.name}</div>
+            <div className="post-author"> Author: {userData?.name}</div>
             <div className="post-buttons">
               <Button className="post-button" name="Save" />
               <Button

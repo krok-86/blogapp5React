@@ -89,7 +89,7 @@ if(window.confirm('Do you really want to go out?')){
                 key={obj.id}
                 post={obj}
                 userData={userData}
-                handleClick={() => deletePost(obj.id===obj.userData?.id)}//fix
+                handleClick={() => deletePost(obj.id)}//fix
               />
             ))}
             <div className="post-button-area">

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deletePostById, getPosts } from "../../api/postApi";
+import { deletePostById, getPosts, postPosts } from "../../api/postApi";
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const { data } = await getPosts();
@@ -10,11 +10,15 @@ export const fetchRemovePost = createAsyncThunk("posts/fetchRemovePost", async (
   await deletePostById(id);  
 });
 
+export const addPost = createAsyncThunk("posts/addPost", async (data) => {
+  return await postPosts(data);
+});
+
 const initialState = {
-  posts: {
-    items: [],
+  // posts: {
+    posts: [],
     status: "loading",
-  },
+  // },
 };
 
 const postsSlice = createSlice({
@@ -24,21 +28,26 @@ const postsSlice = createSlice({
   extraReducers: {
     //get posts
     [fetchPosts.pending]: (state) => {
-      state.posts.items = [];
-      state.posts.status = "loading";
+      state.posts = [];
+      state.status = "loading";
     },
     [fetchPosts.fulfilled]: (state, action) => {
-      state.posts.items = action.payload;
-      state.posts.status = "loaded";
+      state.posts = action.payload;
+      state.status = "loaded";
     },
     [fetchPosts.rejected]: (state) => {
-      state.posts.items = [];
-      state.posts.status = "error";
+      state.posts = [];
+      state.status = "error";
     },
     //remove post
-    [fetchRemovePost.pending]: (state, action) => {      
-      state.posts.items = state.posts.items.filter(obj => obj.id !== action.payload.id);
+    [fetchRemovePost.fulfilled]: (state, action) => {      
+      state.posts = state.posts.filter(obj => obj.id !== action.payload.id);
     },    
+    //add post
+    [addPost.fulfilled]: (state, action) => {
+      state.posts = [...state.posts, action.payload.data];
+      console.log(state.posts)
+    },
   },
 });
 

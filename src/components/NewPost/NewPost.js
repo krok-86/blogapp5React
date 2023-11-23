@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
 import { postPosts, getTopics } from "../../api/postApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addPost } from "../../redux/slices/posts";
 
 const NewPost = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   // const isAuth = useSelector(selectIsAuth);
   // const [users, setUsers] = useState([]);
@@ -45,7 +47,7 @@ const NewPost = () => {
   const submitPosts = async (value) => {
     try {
       const body = { ...value, userId: userData.id, topicId: topicData.value };
-      await postPosts(body);
+      dispatch(addPost(body)).unwrap();
       successToast("Post is created");
       navigate("/");      
     } catch (err) {

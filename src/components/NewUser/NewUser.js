@@ -8,13 +8,21 @@ import { postUserReg, postUserAuth } from "../../api/postApi";
 import { successToast, errorToast } from "../Utilities/toasts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuth, fetchReg, selectIsAuth } from "../../redux/slices/auth";
+import { useEffect } from "react";
 
 
-const NewUser = ({ isRegistration }) => {
+const NewUser = ({ isRegistration, notification }) => {
   const navigate = useNavigate(); 
 
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    if(notification) {
+      errorToast('This actions is allowed to authorized users only!')
+    }
+  }, [])
   
   const { 
     register, 

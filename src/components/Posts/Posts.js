@@ -84,7 +84,7 @@ if(window.confirm('Do you really want to go out?')){
           </div>
           </div> )}
           <div className="post-value">
-            {posts.items.map((obj) => (
+            {posts.map((obj) => (
               <PostItem
                 key={obj.id}
                 post={obj}

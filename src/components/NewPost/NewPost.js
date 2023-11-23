@@ -6,27 +6,30 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
 import { postPosts, getTopics } from "../../api/postApi";
+import { useSelector } from "react-redux";
 
 const NewPost = () => {
   const navigate = useNavigate();
-
+  // const isAuth = useSelector(selectIsAuth);
   // const [users, setUsers] = useState([]);
   const [topics, setTopics] = useState([]);
-
+  const userData = useSelector ((state) => state.auth.data);
+  console.log(userData?.userData?.name)
+  
   // const [author, setAuthor] = useState(null);
   const [topicData, setTopicData] = useState(null);
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {},
   });
-
-  const savedUser = JSON.parse(localStorage.getItem("userValue"));
+  
+  // const savedUser = JSON.parse(localStorage.getItem("userValue"));
   // setAuthor(savedUser);
   // console.log(author)
   // const userName = users.map((item) => ({ label: item.name, value: item.id }));
 
   useEffect(() => {
-    if (!savedUser) {
+    if (!userData) {
       navigate("/auth", { replace: true });
       errorToast(
         "Please, log in. Post creteion is allowed only for authentificated users"
@@ -41,7 +44,7 @@ const NewPost = () => {
   
   const submitPosts = async (value) => {
     try {
-      const body = { ...value, userId: savedUser.id, topicId: topicData.value };
+      const body = { ...value, userId: userData.userData.id, topicId: topicData.value };
       await postPosts(body);
       successToast("Post is created");
       navigate("/");      
@@ -120,7 +123,7 @@ const NewPost = () => {
               value={topicData}
               required="true"
             />
-            <div className="post-author"> Author: {savedUser?.name}</div>
+            <div className="post-author"> Author: {userData?.userData?.name}</div>
             <div className="post-buttons">
               <Button className="post-button" name="Save" />
               <Button

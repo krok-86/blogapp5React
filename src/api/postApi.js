@@ -42,8 +42,8 @@ export const postUserAuth = (body) => {
     return axiosInstance.post(userAuthUrl,body);
 }
 
-export const postUserAuthMe = (body) => {
-    return axiosInstance.post(userAuthMeUrl,body);
+export const getUserAuthMe = () => {
+    return axiosInstance.get(userAuthMeUrl);
 }
 
 // topic block

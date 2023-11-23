@@ -1,9 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getPosts } from "../../api/postApi";
+import { deletePostById, getPosts } from "../../api/postApi";
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const { data } = await getPosts();
   return data;
+});
+
+export const fetchRemovePost = createAsyncThunk("posts/fetchRemovePost", async (id) => {
+  await deletePostById(id);  
 });
 
 const initialState = {
@@ -18,6 +22,7 @@ const postsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    //get posts
     [fetchPosts.pending]: (state) => {
       state.posts.items = [];
       state.posts.status = "loading";
@@ -30,6 +35,10 @@ const postsSlice = createSlice({
       state.posts.items = [];
       state.posts.status = "error";
     },
+    //remove post
+    [fetchRemovePost.pending]: (state, action) => {      
+      state.posts.items = state.posts.items.filter(obj => obj.id !== action.payload.id);
+    },    
   },
 });
 

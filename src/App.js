@@ -7,8 +7,16 @@ import NewUser from "./components/NewUser/NewUser";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
+import { useEffect } from "react";
 
 function App(){
+    const dispatch = useDispatch();
+    const isAuth = useSelector(selectIsAuth);
+    useEffect(() => {
+        dispatch(fetchAuthMe())
+    },[])
     return (
         <>
         <Routes>
@@ -35,64 +43,3 @@ function App(){
 }
 // reportWebVitals();
 export default App;
-
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Posts />,
-//   },
-//   {
-//     path: "/createPost",
-//     element: <NewPost />,
-//   },
-//   {
-//     path: "/postEdit/:id",
-//     element: <PostEdit />,
-//   },
-//   {
-//     path: "/registration",
-//     element: <NewUser isRegistration={true} />,
-//   },
-//   {
-//     path: "/auth",
-//     element: <NewUser isRegistration={false} />,
-//   },
-// ]);
-
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(
-//   <>
-//     <RouterProvider router={router} />
-//     <ToastContainer
-//       position="top-right"
-//       autoClose={5000}
-//       hideProgressBar={false}
-//       newestOnTop={false}
-//       closeOnClick
-//       rtl={false}
-//       pauseOnFocusLoss
-//       draggable
-//       pauseOnHover
-//       theme="light"
-//     />
-//   </>
-// );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
-
-
-// import logo from './logo.svg';
-// import './App.css';
-
-
-// function App() {
-//   return (
-   
-//   );
-// }
-
-// export default App;

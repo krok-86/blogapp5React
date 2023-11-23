@@ -7,20 +7,23 @@ import { successToast, errorToast } from "../Utilities/toasts";
 import PostItem from "../PostItem/PostItem";
 import { getPosts, deletePostById } from "../../api/postApi";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../../redux/slices/posts";
+import { fetchPosts, fetchRemovePost } from "../../redux/slices/posts";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 
 const Posts = () => {
   const dispatch = useDispatch();
   
   const {posts} = useSelector ((state) => state.posts);
+  const userData = useSelector ((state) => state.auth.data);
+ 
   // const isPostsLoading = posts.status === 'loading';
   const isAuth = useSelector(selectIsAuth);
 
   const onClickLogOut = () => {
-// if(window.confirm('Do you really want to go out?')){
+if(window.confirm('Do you really want to go out?')){
   dispatch(logout())
-// }
+  window.localStorage.removeItem('token');
+}
   }
   // const [postsData, setPostsData] = useState([]);
 
@@ -53,12 +56,10 @@ const Posts = () => {
   //  */
   // deletePost(10,)
 
-  const deletePost = async (id, authorId) => {
+  const deletePost = async (id) => {
     try {
       //if (savedUser.id === authorId) {//?
-        await deletePostById(id);
-        const newPostList = posts.filter((obj) => obj.id !== id);
-        dispatch(newPostList);
+        dispatch(fetchRemovePost(id))    
         successToast("post is deleted");
       // } else {
       //   errorToast("You cant delete this post");
@@ -76,8 +77,8 @@ const Posts = () => {
       <div className="posts-area">
         <div className="posts-head">Posts:</div>
         <div className="post-body">
-          { isAuth && (<div className="post-user">Log in: Vasia
-          <div className="post-user">123email.ru</div> 
+          { isAuth && (<div className="post-user">Log in: {userData?.name}
+          <div className="post-user">{userData?.email}</div> 
           <div onClick={onClickLogOut} className="post-user-logOut">
             Log out
           </div>
@@ -87,7 +88,8 @@ const Posts = () => {
               <PostItem
                 key={obj.id}
                 post={obj}
-                handleClick={() => deletePost(obj.id, obj.user?.id)}
+                userData={userData}
+                handleClick={() => deletePost(obj.id===obj.userData?.id)}//fix
               />
             ))}
             <div className="post-button-area">

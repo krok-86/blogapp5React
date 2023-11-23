@@ -6,6 +6,7 @@ const store = configureStore({
     reducer: {
         posts: postsReducer,
         auth: authReducer,
+        // reg: regReducer,
     },
 })
 

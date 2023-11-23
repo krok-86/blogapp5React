@@ -7,7 +7,7 @@ import unknown from "../../img/Unknown_person.jpg";
 import { postUserReg, postUserAuth } from "../../api/postApi";
 import { successToast, errorToast } from "../Utilities/toasts";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
+import { fetchAuth, fetchReg, selectIsAuth } from "../../redux/slices/auth";
 
 
 const NewUser = ({ isRegistration }) => {
@@ -24,7 +24,7 @@ const NewUser = ({ isRegistration }) => {
     formState: { errors, isValid }, 
   } = useForm({
     defaultValues: {
-      name: '',
+      name: 'formalin',
       email: 'formalin@mail.ru',//test
       password: 'formalin',// test
     },   
@@ -34,20 +34,29 @@ const NewUser = ({ isRegistration }) => {
   const submitForm = async (value) => {
    
     try {      
-      const body = {
-        ...value,
-        name: value.name,
-        email: value.email,
-        password: value.password,
-      };      
+      // const body = {
+      //   ...value,
+      //   name: value.name,
+      //   email: value.email,
+      //   password: value.password,
+      // };      
       if (isRegistration) {
-        await postUserReg(body);
+        const data = await dispatch(fetchReg(value));
+        if(!data.payload){
+          return alert ("Wrong!!!!!!!!!!!")//fix
+       }    
+       if ('token' in data.payload) {
+         window.localStorage.setItem('token', data.payload.token)
+       }
         successToast("User is created");
       } else {          
-        const data = await dispatch(fetchAuth(value));
+        const data = await dispatch(fetchAuth(value));    
+        if(!data.payload){
+           return alert ("Wrong!!!!!!!!!!!")//fix
+        }    
         if ('token' in data.payload) {
           window.localStorage.setItem('token', data.payload.token)
-        } else { alert ("Wrong!!!!!!!!!!!")}
+        }
         // const userData = await postUserAuth(body); 
         // const userValue = {
         //    id: userData.data.id, 
@@ -92,22 +101,21 @@ const NewUser = ({ isRegistration }) => {
               label="E-mail"
               type="email"
               {...register("email", { required: "add email" })}
-              fullWidth //?
-            />
+              />
             <input
               className={errors.password ? "user-input error" : "user-input"}
               placeholder="password"
               label="Password"
-              error={Boolean(errors.password?.message)}//??? not work
-              helperText={errors.password?.message}// is it correct? may be toast
+              error={Boolean(errors.password?.message)}//fix??? not work
+              //helperText={errors.password?.message}// is it correct? may be toast
               type="password"
               {...register("password", { required: "add password" })}
-              fullWidth //?
-            ></input>
+              ></input>
             <div>
             <Button
               className="user-button"
               //   handleClick={handleClick}
+              disabled = {!isValid}
               type="submit"//??
               name="submit"//??
             />

@@ -7,9 +7,12 @@ import { successToast, errorToast } from "../Utilities/toasts";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { getPostById, putPostById } from "../../api/postApi";
+import { useDispatch } from "react-redux";
+import { sendUpdatedPost, testPost } from "../../redux/slices/posts";
 
 
 const PostEdit = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const [postData, setPostData] = useState({}); 
@@ -29,7 +32,7 @@ const PostEdit = () => {
     
   const updatePost = (event) => {
     try {
-      const newPost = { ...postData, post: event.target.value};
+      const newPost = { ...postData, post: event.target?.value};
       setPostData(newPost);
     } catch (err) {
       console.log(">>>>>>>>>>>>>>>>", err);
@@ -38,12 +41,11 @@ const PostEdit = () => {
 
   const sendPost = async () => {
     try {
-        await putPostById(id, {postText: postData.post});//!!      
+      dispatch(sendUpdatedPost({id, postText: postData.post})).unwrap();
       successToast("The post has been edited");
       navigate("/");
     } catch (err) {
-      errorToast(err.response.data.message);
-      console.log(">>>>>>>>>>>>>>>>", err);
+      errorToast(err.data);
     }
   };
 

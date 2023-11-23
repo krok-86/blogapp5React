@@ -1,14 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postUserAuth, getUserAuthMe, postUserReg } from "../../api/postApi";
 
-export const fetchReg = createAsyncThunk('registration/fetchReg', async (params) => {
+export const fetchReg = createAsyncThunk('registration/fetchReg', async (params, { rejectWithValue }) => {
+  try {
   const { data } = await postUserReg(params)
   return data;
+  } catch (err) {
+    return rejectWithValue({ data: err.response.data.message  });
+  }
   });
 
-export const fetchAuth = createAsyncThunk('authorization/fetchAuth', async (params) => {
+export const fetchAuth = createAsyncThunk('authorization/fetchAuth', async (params, { rejectWithValue }) => {
+  try {
 const { data } = await postUserAuth(params)
 return data;
+  } catch (err) {
+    return rejectWithValue({ data: err.response.data.message  });
+  }
 });
 
 export const fetchAuthMe = createAsyncThunk('authorization/fetchAuthMe', async () => {

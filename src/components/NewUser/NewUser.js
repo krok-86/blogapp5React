@@ -16,13 +16,6 @@ const NewUser = ({ isRegistration, notification }) => {
 
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
-
-
-  useEffect(() => {
-    if(notification) {
-      errorToast('This actions is allowed to authorized users only!')
-    }
-  }, [])
   
   const { 
     register, 
@@ -49,18 +42,18 @@ const NewUser = ({ isRegistration, notification }) => {
       //   password: value.password,
       // };      
       if (isRegistration) {
-        const data = await dispatch(fetchReg(value));
-        if(!data.payload){
-          return alert ("Wrong!!!!!!!!!!!")//fix
-       }    
+        const data = await dispatch(fetchReg(value)).unwrap();
        if ('token' in data.payload) {
          window.localStorage.setItem('token', data.payload.token)
        }
         successToast("User is created");
-      } else {          
+      } else {
         const data = await dispatch(fetchAuth(value)).unwrap();
         if ('token' in data) {
-          window.localStorage.setItem('token', data.token)
+          window.localStorage.setItem('token', data.token);
+          successToast("User is authorized"); 
+        } else {
+          errorToast(data.payload.data)
         }
         // const userData = await postUserAuth(body); 
         // const userValue = {
@@ -70,13 +63,12 @@ const NewUser = ({ isRegistration, notification }) => {
         //  }
        
           // dispatch(fetchAuth(body)) 
-        // localStorage.setItem('userValue', JSON.stringify(userValue));        
-        successToast("User is authorized");       
+        // localStorage.setItem('userValue', JSON.stringify(userValue));              
       }
       navigate("/");      
     } catch (err) {
-      errorToast(err.message);
-      console.log(err);
+      errorToast(err.data);
+
     }
   };
   const resetForm = () => {
@@ -111,8 +103,6 @@ const NewUser = ({ isRegistration, notification }) => {
               className={errors.password ? "user-input error" : "user-input"}
               placeholder="password"
               label="Password"
-              error={Boolean(errors.password?.message)}//fix??? not work
-              //helperText={errors.password?.message}// is it correct? may be toast
               type="password"
               {...register("password", { required: "add password" })}
               ></input>

@@ -58,17 +58,11 @@ if(window.confirm('Do you really want to go out?')){
 
   const deletePost = async (id) => {
     try {
-      //if (savedUser.id === authorId) {//?
-        dispatch(fetchRemovePost(id))    
-        successToast("post is deleted");
-      // } else {
-      //   errorToast("You cant delete this post");
-      // }
+        await dispatch(fetchRemovePost(id)).unwrap();
+        successToast("Post is deleted");
     } catch (err) {
-      if (isAxiosError(err)) {
-        errorToast(err.response.data.message);
-      }
       console.log(">>>>>>>>>>>>>>>>", err);
+      errorToast(err.data);
     }
   };
 

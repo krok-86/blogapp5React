@@ -21,8 +21,8 @@ function App(){
         <>
         <Routes>
             <Route path="/" element={<Posts />}/>
-            <Route path="/createPost" element={isAuth ? <NewPost /> : <NewUser isRegistration={false} notification={true}/>}/>
-            <Route path="/postEdit/:id" element={isAuth ? <PostEdit /> : <NewUser isRegistration={false} notification={true}/>}/>
+            <Route path="/createPost" element={isAuth ? <NewPost /> : <NewUser isRegistration={false}/>}/>
+            <Route path="/postEdit/:id" element={isAuth ? <PostEdit /> : <NewUser isRegistration={false}/>}/>
             <Route path="/registration" element={<NewUser isRegistration={true} />}/>
             <Route path="/auth" element={<NewUser isRegistration={false} />}/>
         </Routes>

@@ -49,10 +49,9 @@ const NewPost = () => {
       const body = { ...value, userId: userData.id, topicId: topicData.value };
       dispatch(addPost(body)).unwrap();
       successToast("Post is created");
-      navigate("/");      
+      navigate("/");
     } catch (err) {
-      errorToast(err.response.data.message);
-      console.log(err);
+      errorToast(err.data);
     }
   };
 

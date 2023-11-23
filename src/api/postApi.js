@@ -12,8 +12,8 @@ export const getPostById = async (id) => {
     return await axiosInstance.get(`${postUrl}/${id}`)//why {params: id}?
 }
 
-export const putPostById = (id, body) => {
-    return axiosInstance.put(`${postUrl}/${id}`, body);//?
+export const putPostById = (params) => {
+    return axiosInstance.put(`${postUrl}/${params.id}`, {postText: params.postText});//?
 }
 
 export const getPosts = () => {

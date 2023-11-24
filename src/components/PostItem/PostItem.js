@@ -4,11 +4,10 @@ import { enGB } from "date-fns/esm/locale";
 import Button from "../Buttons/Button";
 import { Link } from "react-router-dom";
 
-const PostItem = ({ post, handleClick, userData }) => {
- 
+const PostItem = ({ post, handleClick }) => {
   const date = format(new Date(post.createdAt), "MMM d, yyyy", {
     locale: enGB,
-  }); 
+  });
 
   return (
     <PostItemStyled>
@@ -26,13 +25,12 @@ const PostItem = ({ post, handleClick, userData }) => {
             <div>{date}</div>
           </div>
           <div className="post-number">Author {post?.user?.name}</div>
-            <>
-              <Button handleClick={handleClick} name="Delete" />
-              <Link to={`/postEdit/${post.id}`}>
-                <Button name="Edit" />
-              </Link>
-            </>
-
+          <>
+            <Button handleClick={handleClick} name="Delete" />
+            <Link to={`/postEdit/${post.id}`}>
+              <Button name="Edit" />
+            </Link>
+          </>
         </div>
         <pre className="post-text">{post.post}</pre>
       </div>

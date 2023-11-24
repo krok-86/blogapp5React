@@ -32,6 +32,7 @@ const NewUserStyled = styled.div`
   }
   .user-img-wrap {
     display:flex;
+    justify-content: center;
   }
   .user-input {
     width: 60%;
@@ -50,11 +51,18 @@ const NewUserStyled = styled.div`
    min-width: 30%;
   } 
   .user-img {
-    width: 130px;
-    margin-bottom: 22px;
-    margin-top: 3px;
+    width: 100%;
+    /* margin-top: 3px; */
     border-radius: 20px;
   }     
+  .user-avatar-wrap {
+    display: flex;
+    justify-content: enter;
+    align-items: center;
+    max-width: 200px;
+    margin-bottom: 20px;
+    /* border: 1px solid red; */
+  }
   .error {
     border: 1px solid red;
   }

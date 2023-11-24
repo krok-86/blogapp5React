@@ -1,65 +1,35 @@
-import { isAxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PostsStyled from "./PostsStyled";
 import { Link } from "react-router-dom";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
 import PostItem from "../PostItem/PostItem";
-import { getPosts, deletePostById } from "../../api/postApi";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchRemovePost } from "../../redux/slices/posts";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 
 const Posts = () => {
   const dispatch = useDispatch();
-  
-  const {posts} = useSelector ((state) => state.posts);
-  const userData = useSelector ((state) => state.auth.data);
- 
-  // const isPostsLoading = posts.status === 'loading';
+
+  const { posts } = useSelector((state) => state.posts);
+  const userData = useSelector((state) => state.auth.data);
   const isAuth = useSelector(selectIsAuth);
 
   const onClickLogOut = () => {
-if(window.confirm('Do you really want to go out?')){
-  dispatch(logout())
-  window.localStorage.removeItem('token');
-}
-  }
-  // const [postsData, setPostsData] = useState([]);
-
-  // const [logOut, setLogOut] = useState("");
-
-  const savedUser = JSON.parse(localStorage.getItem("userValue"));
-
-  // const exitLogIn = () => {
-  //   setLogOut(localStorage.removeItem("userValue"));
-  // };
+    if (window.confirm("Do you really want to go out?")) {
+      dispatch(logout());
+      window.localStorage.removeItem("token");
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchPosts());
-    // const fetchData = async () => {
-    //   try {
-    //     const result = await getPosts();
-    //     setPosts(result.data);
-    //   } catch (err) {
-    //     errorToast(err.response.data.message);
-    //     console.log(">>>>>>", err);
-    //   }
-    // };
-    // fetchData();
   }, []);
-
-  // /**
-  //  * Func to delete post
-  //  * @param {number} id - id of item to delete
-  //  * @param {number} authorId id of author
-  //  */
-  // deletePost(10,)
 
   const deletePost = async (id) => {
     try {
-        await dispatch(fetchRemovePost(id)).unwrap();
-        successToast("Post is deleted");
+      await dispatch(fetchRemovePost(id)).unwrap();
+      successToast("Post is deleted");
     } catch (err) {
       console.log(">>>>>>>>>>>>>>>>", err);
       errorToast(err.data);
@@ -71,19 +41,24 @@ if(window.confirm('Do you really want to go out?')){
       <div className="posts-area">
         <div className="posts-head">Posts:</div>
         <div className="post-body">
-          { isAuth && (<div className="post-user">Log in: {userData?.name}
-          <div className="post-user">{userData?.email}</div> 
-          <div onClick={onClickLogOut} className="post-user-logOut">
-            Log out
-          </div>
-          </div> )}
+          {isAuth && (
+            <div className="post-user">              
+              <div className="post-user-info">
+                <div>Log in: {userData?.name}</div>
+                <div>email: {userData?.email}</div>
+              </div>
+              <div onClick={onClickLogOut} className="post-user-logOut">
+                Log out
+              </div>
+            </div>
+          )}
           <div className="post-value">
             {posts.map((obj) => (
               <PostItem
                 key={obj.id}
                 post={obj}
                 userData={userData}
-                handleClick={() => deletePost(obj.id)}//fix
+                handleClick={() => deletePost(obj.id)}
               />
             ))}
             <div className="post-button-area">

@@ -4,79 +4,60 @@ import Button from "../Buttons/Button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import unknown from "../../img/Unknown_person.jpg";
-import { postUserReg, postUserAuth } from "../../api/postApi";
 import { successToast, errorToast } from "../Utilities/toasts";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAuth, fetchReg, selectIsAuth } from "../../redux/slices/auth";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchAuth, fetchReg } from "../../redux/slices/auth";
 
+const NewUser = ({ isRegistration }) => {
+  const navigate = useNavigate();
 
-const NewUser = ({ isRegistration, notification }) => {
-  const navigate = useNavigate(); 
-
-  const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
-  
-  const { 
-    register, 
-    handleSubmit, 
+
+  const {
+    register,
+    handleSubmit,
     reset,
     setError,
-    formState: { errors, isValid }, 
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      name: 'formalin',
-      email: 'formalin@mail.ru',//test
-      password: 'formalin',// test
-    },   
-    mode: "onChange"
+      name: "", //test formalin
+      email: "", //test formalin@mail.ru
+      password: "", // test formalin
+    },
+    mode: "onChange",
   });
 
   const submitForm = async (value) => {
-   
-    try {      
-      // const body = {
-      //   ...value,
-      //   name: value.name,
-      //   email: value.email,
-      //   password: value.password,
-      // };      
+    try {
       if (isRegistration) {
         const data = await dispatch(fetchReg(value)).unwrap();
-       if ('token' in data.payload) {
-         window.localStorage.setItem('token', data.payload.token)
-       }
+        if ("token" in data) {
+          window.localStorage.setItem("token", data.token);
+        }
         successToast("User is created");
+        navigate("/");
       } else {
         const data = await dispatch(fetchAuth(value)).unwrap();
-        if ('token' in data) {
-          window.localStorage.setItem('token', data.token);
-          successToast("User is authorized"); 
+        if ("token" in data) {
+          window.localStorage.setItem("token", data.token);
+          successToast("User is authorized");
+          navigate("/");
         } else {
-          errorToast(data.payload.data)
+          errorToast(data.payload.data);
         }
-        // const userData = await postUserAuth(body); 
-        // const userValue = {
-        //    id: userData.data.id, 
-        //    name: userData.data.name, 
-        //    email: userData.data.email
-        //  }
-       
-          // dispatch(fetchAuth(body)) 
-        // localStorage.setItem('userValue', JSON.stringify(userValue));              
       }
-      navigate("/");      
+      navigate("/");
     } catch (err) {
       errorToast(err.data);
-
     }
   };
   const resetForm = () => {
     reset();
   };
-  
+
   const title = isRegistration ? "Registration" : "Authorization";
- 
+
   return (
     <NewUserStyled>
       <div className="user-value">
@@ -98,31 +79,32 @@ const NewUser = ({ isRegistration, notification }) => {
               label="E-mail"
               type="email"
               {...register("email", { required: "add email" })}
-              />
+            />
             <input
               className={errors.password ? "user-input error" : "user-input"}
               placeholder="password"
               label="Password"
               type="password"
               {...register("password", { required: "add password" })}
-              ></input>
-            <div className='form-buttons'>
-            <Button
-              className="user-button"
-              //   handleClick={handleClick}
-              disabled = {!isValid}
-              type="submit"//??
-              name="submit"//??
-            />
-            <Button name="clear form" handleClick={resetForm} />
-            {isRegistration && (
-              <Link to="/auth">
-                <Button className="user-button" name="authorization" />
-              </Link>
-            )}
+            ></input>
+            <div className="form-buttons">
+              <Button
+                className="user-button"
+                disabled={!isValid}
+                type="submit" //?
+                name="submit" //?
+              />
+              <Button name="clear form" handleClick={resetForm} />
+              {isRegistration && (
+                <Link to="/auth">
+                  <Button className="user-button" name="authorization" />
+                </Link>
+              )}
             </div>
           </form>
+          <div className="user-avatar-wrap">
           <img src={unknown} alt="unknown" className="user-img" />
+          </div>
         </div>
       </div>
     </NewUserStyled>

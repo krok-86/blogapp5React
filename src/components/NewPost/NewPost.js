@@ -5,30 +5,22 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import Button from "../Buttons/Button";
 import { successToast, errorToast } from "../Utilities/toasts";
-import { postPosts, getTopics } from "../../api/postApi";
+import { getTopics } from "../../api/postApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../redux/slices/posts";
 
 const NewPost = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const isAuth = useSelector(selectIsAuth);
-  // const [users, setUsers] = useState([]);
   const [topics, setTopics] = useState([]);
-  const userData = useSelector ((state) => state.auth.data);
-  console.log(userData?.userData?.name)
-  
-  // const [author, setAuthor] = useState(null);
+  const userData = useSelector((state) => state.auth.data);
+  console.log(userData?.userData?.name);
+
   const [topicData, setTopicData] = useState(null);
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {},
   });
-  
-  // const savedUser = JSON.parse(localStorage.getItem("userValue"));
-  // setAuthor(savedUser);
-  // console.log(author)
-  // const userName = users.map((item) => ({ label: item.name, value: item.id }));
 
   useEffect(() => {
     if (!userData) {
@@ -43,7 +35,7 @@ const NewPost = () => {
     label: item.title,
     value: item.id,
   }));
-  
+
   const submitPosts = async (value) => {
     try {
       const body = { ...value, userId: userData.id, topicId: topicData.value };
@@ -55,34 +47,14 @@ const NewPost = () => {
     }
   };
 
-  // const handleSelectUser = (author) => {
-  //   setAuthor(author);
-  // };
-
   const handleSelectTopic = (theme) => {
     setTopicData(theme);
   };
 
   const resetSelections = () => {
-    // setAuthor(null);
     setTopicData(null);
     reset();
   };
-
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const result = await getUsers();
-  //       setUsers(result.data);
-  //     } catch (err) {
-  //       errorToast(err.response.data.message);
-  //       console.log(">>>>>>", err);
-  //     }
-  //   };
-  //   fetchUsers();
-  // }, []);
-
-  // console.log("users>>>>>>>>", users);
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -109,13 +81,6 @@ const NewPost = () => {
               {...register("postText", { required: true })}
               placeholder="Enter your post here..."
             />
-            {/* <Select
-              className="post-select"
-              options={userName}
-              onChange={(value) => handleSelectUser(value)}
-              placeholder="Select author..."
-              value={author}
-            /> */}
             <Select
               className="post-select"
               options={topicTitle}

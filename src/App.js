@@ -3,7 +3,6 @@ import Posts from "./components/Posts/Posts";
 import PostEdit from "./components/PostEdit/PostEdit";
 import NewPost from "./components/NewPost/NewPost";
 import NewUser from "./components/NewUser/NewUser";
-// import reportWebVitals from "./reportWebVitals";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,5 +40,5 @@ function App(){
         </>
     )
 }
-// reportWebVitals();
+
 export default App;

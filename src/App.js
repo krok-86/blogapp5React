@@ -3,25 +3,32 @@ import Posts from "./components/Posts/Posts";
 import PostEdit from "./components/PostEdit/PostEdit";
 import NewPost from "./components/NewPost/NewPost";
 import NewUser from "./components/NewUser/NewUser";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
+import { useDispatch } from "react-redux";
+import { fetchAuthMe } from "./redux/slices/auth";
 import { useEffect } from "react";
+import PrivateRoute from "./utils/router/PrivateRouter";
 
 function App(){
     const dispatch = useDispatch();
-    const isAuth = useSelector(selectIsAuth);
+    const navigate = useNavigate()   
     useEffect(() => {
         dispatch(fetchAuthMe())
+        navigate(JSON.parse(window.sessionStorage.getItem('lastRoute') || '{}'))
+        window.onbeforeunload = () => {
+            window.sessionStorage.setItem('lastRoute', JSON.stringify(window.location.pathname))
+        }
     },[])
     return (
         <>
         <Routes>
             <Route path="/" element={<Posts />}/>
-            <Route path="/createPost" element={isAuth ? <NewPost /> : <NewUser isRegistration={false}/>}/>
-            <Route path="/postEdit/:id" element={isAuth ? <PostEdit /> : <NewUser isRegistration={false}/>}/>
+            <Route element = {<PrivateRoute />}>
+            <Route path="/createPost" element={<NewPost />}/>
+            <Route path="/postEdit/:id" element={<PostEdit />}/>
+            </Route>        
             <Route path="/registration" element={<NewUser isRegistration={true} />}/>
             <Route path="/auth" element={<NewUser isRegistration={false} />}/>
         </Routes>

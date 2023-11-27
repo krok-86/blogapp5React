@@ -55,7 +55,10 @@ const NewUser = ({ isRegistration }) => {
   const resetForm = () => {
     reset();
   };
-
+const goBack = () => {
+  console.log(">>>>>>>>>","click")
+  navigate(-1);
+};
   const title = isRegistration ? "Registration" : "Authorization";
 
   return (
@@ -100,8 +103,10 @@ const NewUser = ({ isRegistration }) => {
                   <Button className="user-button" name="authorization" />
                 </Link>
               )}
+              
             </div>
           </form>
+          <Button className="user-button" name="go back" handleClick = {goBack} />
           <div className="user-avatar-wrap">
           <img src={unknown} alt="unknown" className="user-img" />
           </div>
